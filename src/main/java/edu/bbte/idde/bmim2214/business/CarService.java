@@ -7,10 +7,13 @@ import java.util.List;
 
 public interface CarService {
     void addCar(CarModel car) throws CarExceptionDates;
+
     void deleteCar(int id) throws CarExceptionNoId;
 
     void updateCar(CarModel car) throws CarExceptionNoId, CarExceptionDates;
+
     CarModel getCar(int id) throws CarExceptionNoId;
+
     List<CarModel> getAllCars();
 
 }

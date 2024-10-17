@@ -1,13 +1,13 @@
 package edu.bbte.idde.bmim2214.presentation;
-import  edu.bbte.idde.bmim2214.business.*;
-import  edu.bbte.idde.bmim2214.dataaccess.*;
+
+import edu.bbte.idde.bmim2214.business.*;
+import edu.bbte.idde.bmim2214.dataaccess.*;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CarFrontend {
@@ -43,7 +43,7 @@ public class CarFrontend {
                 } catch (IllegalArgumentException ex) {
                     JOptionPane.showMessageDialog(null, "Wrong parameters");
                     throw new RuntimeException(ex);
-                } catch(ParseException ex) {
+                } catch (ParseException ex) {
                     JOptionPane.showMessageDialog(null, "Wrong date format. Usage: yyyy-mm-dd");
                     throw new RuntimeException(ex);
                 } catch (CarExceptionDates ex) {
@@ -202,6 +202,7 @@ public class CarFrontend {
             JOptionPane.showMessageDialog(null, carStr, "Result", JOptionPane.INFORMATION_MESSAGE);
         }
     }
+
     private void listCars() {
         StringBuilder carList = new StringBuilder();
         for (CarModel car : carService.getAllCars()) {

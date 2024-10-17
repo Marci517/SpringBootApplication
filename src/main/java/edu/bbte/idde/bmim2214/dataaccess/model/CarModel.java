@@ -2,7 +2,7 @@ package edu.bbte.idde.bmim2214.dataaccess.model;
 
 import java.util.Date;
 
-public class CarModel extends BaseEntity{
+public class CarModel extends BaseEntity {
     private String name;
     private String brand;
     private int year;

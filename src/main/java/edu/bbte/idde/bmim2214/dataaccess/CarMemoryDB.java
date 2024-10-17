@@ -7,23 +7,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CarMemoryDB implements CarDao{
+public class CarMemoryDB implements CarDao {
     private Map<Long, CarModel> carDatabase = new HashMap<>();
     private long currentId = 0;
+
     @Override
     public void createCar(CarModel car) {
-        currentId ++;
+        currentId++;
         car.setId(currentId);
         carDatabase.put(currentId, car);
     }
 
     @Override
     public void deleteCar(long id) throws CarExceptionNoId {
-        if(carDatabase.containsKey(id)) {
+        if (carDatabase.containsKey(id)) {
             carDatabase.remove(id);
-        }
-        else
-        {
+        } else {
             throw new CarExceptionNoId("There is no such an id");
         }
 
@@ -32,22 +31,18 @@ public class CarMemoryDB implements CarDao{
     @Override
     public void updateCar(CarModel car) throws CarExceptionNoId {
         long id = car.getId();
-        if(carDatabase.containsKey(id)) {
+        if (carDatabase.containsKey(id)) {
             carDatabase.put(id, car);
-        }
-        else
-        {
+        } else {
             throw new CarExceptionNoId("There is no such an id");
         }
     }
 
     @Override
     public CarModel readCar(long id) throws CarExceptionNoId {
-        if(carDatabase.containsKey(id)) {
+        if (carDatabase.containsKey(id)) {
             return carDatabase.get(id);
-        }
-        else
-        {
+        } else {
             throw new CarExceptionNoId("There is no such an id");
         }
 
