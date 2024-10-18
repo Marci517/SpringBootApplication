@@ -1,3 +1,9 @@
-/*
- * Kiinduló gradle file
- */
+plugins {
+    id 'java'
+    id 'application'
+}
+
+application {
+    // a main metódust tartalmazó osztály megjelölése
+    mainClass = 'edu.bbte.idde.bmim2214.Main'
+}
