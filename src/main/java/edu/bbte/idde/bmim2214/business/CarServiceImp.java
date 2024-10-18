@@ -1,8 +1,8 @@
 package edu.bbte.idde.bmim2214.business;
 
-import edu.bbte.idde.bmim2214.business.Exceptions.CarExceptionDates;
+import edu.bbte.idde.bmim2214.business.exceptions.CarExceptionDates;
 import edu.bbte.idde.bmim2214.dataaccess.CarDao;
-import edu.bbte.idde.bmim2214.dataaccess.Exceptions.CarExceptionNoId;
+import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionNoId;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 
 import java.time.LocalDate;
