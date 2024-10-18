@@ -1,5 +1,6 @@
 package edu.bbte.idde.bmim2214.dataaccess;
 
+import edu.bbte.idde.bmim2214.dataaccess.Exceptions.CarExceptionNoId;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 
 import java.util.ArrayList;

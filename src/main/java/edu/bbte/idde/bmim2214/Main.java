@@ -8,7 +8,7 @@ import edu.bbte.idde.bmim2214.dataaccess.*;
 public class Main {
     public static void main(String[] args) {
         CarDao carDao = new CarMemoryDB();
-        CarService carService = new Service(carDao);
+        CarService carService = new CarServiceImp(carDao);
         CarFrontend carFrontend = new CarFrontend(carService);
         carFrontend.display();
     }
