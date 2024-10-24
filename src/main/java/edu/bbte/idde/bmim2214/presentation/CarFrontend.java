@@ -38,7 +38,10 @@ public class CarFrontend {
         JButton addCarButton = createButton("Add Car", this::addCarAction);
         JButton updateCarButton = createButton("Update Car", this::updateCarAction);
         JButton deleteCarButton = createButton("Delete Car", this::deleteCarAction);
-        JButton getCarButton = createButton("Search Car", this::getCarAction);
+        JButton getCarButton = createButton("Search Car", e -> {
+            String carDetails = getCarAction(e);
+            log.info(carDetails);
+        });
         JButton listCarsButton = createButton("List Cars", this::listCarsAction);
 
         frame.add(addCarButton);
@@ -81,12 +84,13 @@ public class CarFrontend {
         }
     }
 
-    private void getCarAction(ActionEvent e) {
+    private String getCarAction(ActionEvent e) {
         log.info("get car event triggered by: " + e.getActionCommand());
         try {
-            getCar();
+            return getCar();
         } catch (IllegalArgumentException | CarExceptionNoId ex) {
             JOptionPane.showMessageDialog(null, "Id does not exist");
+            return "Id does not exist";
         }
     }
 
