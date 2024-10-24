@@ -63,13 +63,13 @@ public class CarModel extends BaseEntity {
 
     @Override
     public String toString() {
-        return "CarModel{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", brand='" + brand + '\'' +
-                ", year=" + year +
-                ", price=" + price +
-                ", uploadDate=" + uploadDate +
-                '}';
+        return "CarModel{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", brand='" + brand + '\''
+                + ", year=" + year
+                + ", price=" + price
+                + ", uploadDate=" + uploadDate
+                + '}';
     }
 }

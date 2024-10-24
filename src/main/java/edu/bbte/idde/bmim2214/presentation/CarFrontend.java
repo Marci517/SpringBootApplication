@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 public class CarFrontend {
     private final CarService carService;
-    private static final Logger LOG = LoggerFactory.getLogger(CarFrontend.class);
+    private static final Logger log = LoggerFactory.getLogger(CarFrontend.class);
 
 
     public CarFrontend(CarService carService) {
@@ -25,7 +25,7 @@ public class CarFrontend {
     }
 
     public void display() {
-        LOG.info("display");
+        log.info("display");
         JFrame frame = new JFrame("Car Reselling");
         frame.setSize(700, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,7 +46,7 @@ public class CarFrontend {
         addCarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                LOG.info("add car");
+                log.info("add car");
                 try {
                     addCar();
                 } catch (IllegalArgumentException ex) {
@@ -65,7 +65,7 @@ public class CarFrontend {
         updateCarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                LOG.info("update car");
+                log.info("update car");
                 try {
                     updateCar();
                 } catch (CarExceptionNoId ex) {
@@ -87,7 +87,7 @@ public class CarFrontend {
         deleteCarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                LOG.info("delete car");
+                log.info("delete car");
                 try {
                     deleteCar();
                 } catch (CarExceptionNoId | IllegalArgumentException ex) {
@@ -100,7 +100,7 @@ public class CarFrontend {
         getCarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                LOG.info("get car");
+                log.info("get car");
                 try {
                     getCar();
                 } catch (CarExceptionNoId | IllegalArgumentException ex) {
@@ -112,7 +112,7 @@ public class CarFrontend {
         listCarsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                LOG.info("get all cars");
+                log.info("get all cars");
                 listCars();
             }
         });

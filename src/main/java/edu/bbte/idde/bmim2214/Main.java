@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 
 public class Main {
     public static void main(String[] args) {
-        Logger LOG = LoggerFactory.getLogger(Main.class);
-        LOG.info("start");
+        Logger log = LoggerFactory.getLogger(Main.class);
+        log.info("start");
         // CarDao carDao = new CarMemoryDB();
         // CarDao carDao = new CarDaoJdbc();
         AbstractDaoFactory abstractDaoFactory = AbstractDaoFactory.getInstance();

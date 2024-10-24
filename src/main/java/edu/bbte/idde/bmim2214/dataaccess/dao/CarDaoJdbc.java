@@ -15,21 +15,21 @@ import org.slf4j.LoggerFactory;
 public class CarDaoJdbc implements CarDao {
 
     private final HikariDataSource dataSource;
-    private static final Logger LOG = LoggerFactory.getLogger(CarDaoJdbc.class);
+    private static final Logger log = LoggerFactory.getLogger(CarDaoJdbc.class);
 
     public CarDaoJdbc() {
-        LOG.info("hikari dataSource setup");
+        log.info("hikari dataSource setup");
         dataSource = new HikariDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/idee?useSSL=false");
         dataSource.setUsername("root");
-        dataSource.setPassword("semm i");
+        dataSource.setPassword("ragaszto2002");
         dataSource.setMaximumPoolSize(4);
     }
 
     @Override
     public void createCar(CarModel car) {
-        LOG.info("create car");
+        log.info("create car");
         String sqlString = "INSERT INTO CarModel (car_name, brand, car_year, price, uploadDate) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement sqlQuery = connection.prepareStatement(sqlString, Statement.RETURN_GENERATED_KEYS)) {
@@ -53,7 +53,7 @@ public class CarDaoJdbc implements CarDao {
 
     @Override
     public void deleteCar(long id) throws CarExceptionNoId {
-        LOG.info("delete car");
+        log.info("delete car");
         String sqlString = "DELETE FROM CarModel WHERE CarModel.id = ?";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement sqlQuery = connection.prepareStatement(sqlString, Statement.RETURN_GENERATED_KEYS)) {
@@ -70,8 +70,9 @@ public class CarDaoJdbc implements CarDao {
 
     @Override
     public void updateCar(CarModel car) throws CarExceptionNoId {
-        LOG.info("update car");
-        String sqlString = "UPDATE CarModel SET car_name = ?, brand = ?, car_year = ?, price = ?, uploadDate = ? WHERE id = ?";
+        log.info("update car");
+        String sqlString = "UPDATE CarModel"
+                + " SET car_name = ?, brand = ?, car_year = ?, price = ?, uploadDate = ? WHERE id = ?";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement sqlQuery = connection.prepareStatement(sqlString)) {
             sqlQuery.setString(1, car.getName());
@@ -94,7 +95,7 @@ public class CarDaoJdbc implements CarDao {
 
 
     public CarModel readCar(long id) throws CarExceptionNoId {
-        LOG.info("read car");
+        log.info("read car");
         String sqlString = "SELECT * FROM CarModel WHERE CarModel.id = ?";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement sqlQuery = connection.prepareStatement(sqlString)) {
@@ -124,7 +125,7 @@ public class CarDaoJdbc implements CarDao {
 
     @Override
     public List<CarModel> getAllCars() {
-        LOG.info("get all cars");
+        log.info("get all cars");
         List<CarModel> carList = new ArrayList<>();
         String sqlString = "SELECT * FROM CarModel";
 
