@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CarDao {
 
-    void createCar(CarModel car);
+    void createCar(CarModel car) throws CarExceptionNoId;
 
     void deleteCar(long id) throws CarExceptionNoId;
 
@@ -15,7 +15,7 @@ public interface CarDao {
 
     CarModel readCar(long id) throws CarExceptionNoId;
 
-    List<CarModel> getAllCars();
+    List<CarModel> getAllCars() throws CarExceptionNoId;
 
 
 }

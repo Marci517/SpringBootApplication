@@ -27,7 +27,7 @@ public class CarDaoJdbc implements CarDao {
     }
 
     @Override
-    public void createCar(CarModel car) {
+    public void createCar(CarModel car) throws CarExceptionNoId {
         log.info("create car");
         String sqlString = "INSERT INTO CarModel (car_name, brand, car_year, price, uploadDate) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = dataSource.getConnection();
@@ -41,11 +41,11 @@ public class CarDaoJdbc implements CarDao {
             int affectedRows = sqlQuery.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new RuntimeException("Failed to insert the car.");
+                throw new CarExceptionNoId("Failed to insert the car.");
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new CarExceptionNoId("Failed to insert the car.");
         }
     }
 
@@ -123,7 +123,7 @@ public class CarDaoJdbc implements CarDao {
 
 
     @Override
-    public List<CarModel> getAllCars() {
+    public List<CarModel> getAllCars() throws CarExceptionNoId {
         log.info("get all cars");
         List<CarModel> carList = new ArrayList<>();
         String sqlString = "SELECT * FROM CarModel";
@@ -143,7 +143,7 @@ public class CarDaoJdbc implements CarDao {
                 carList.add(car);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new CarExceptionNoId("Failed to get all cars.");
         }
 
         return carList;

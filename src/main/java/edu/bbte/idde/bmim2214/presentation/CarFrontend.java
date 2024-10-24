@@ -51,13 +51,12 @@ public class CarFrontend {
                     addCar();
                 } catch (IllegalArgumentException ex) {
                     JOptionPane.showMessageDialog(null, "Wrong parameters");
-                    throw new RuntimeException(ex);
                 } catch (ParseException ex) {
                     JOptionPane.showMessageDialog(null, "Wrong date format. Usage: yyyy-mm-dd");
-                    throw new RuntimeException(ex);
                 } catch (CarExceptionDates ex) {
                     JOptionPane.showMessageDialog(null, "The year should be between 1900 and the current year.");
-                    throw new RuntimeException(ex);
+                } catch (CarExceptionNoId ex) {
+                    JOptionPane.showMessageDialog(null, "Failed to insert the car.");
                 }
             }
         });
@@ -70,16 +69,12 @@ public class CarFrontend {
                     updateCar();
                 } catch (CarExceptionNoId ex) {
                     JOptionPane.showMessageDialog(null, "Id does not exist");
-                    throw new RuntimeException(ex);
                 } catch (IllegalArgumentException ex) {
                     JOptionPane.showMessageDialog(null, "Wrong parameters");
-                    throw new RuntimeException(ex);
                 } catch (ParseException ex) {
                     JOptionPane.showMessageDialog(null, "Wrong date format. Usage: yyyy-mm-dd");
-                    throw new RuntimeException(ex);
                 } catch (CarExceptionDates ex) {
                     JOptionPane.showMessageDialog(null, "The year should be between 1900 and the current year.");
-                    throw new RuntimeException(ex);
                 }
             }
         });
@@ -92,7 +87,6 @@ public class CarFrontend {
                     deleteCar();
                 } catch (CarExceptionNoId | IllegalArgumentException ex) {
                     JOptionPane.showMessageDialog(null, "Id does not exist");
-                    throw new RuntimeException(ex);
                 }
             }
         });
@@ -105,7 +99,6 @@ public class CarFrontend {
                     getCar();
                 } catch (CarExceptionNoId | IllegalArgumentException ex) {
                     JOptionPane.showMessageDialog(null, "Id does not exist");
-                    throw new RuntimeException(ex);
                 }
             }
         });
@@ -113,14 +106,18 @@ public class CarFrontend {
             @Override
             public void actionPerformed(ActionEvent e) {
                 log.info("get all cars");
-                listCars();
+                try {
+                    listCars();
+                } catch (CarExceptionNoId ex) {
+                    JOptionPane.showMessageDialog(null, "Failed to get all cars.");
+                }
             }
         });
 
         frame.setVisible(true);
     }
 
-    private void addCar() throws ParseException, CarExceptionDates {
+    private void addCar() throws ParseException, CarExceptionDates, CarExceptionNoId {
         JTextField brandField = new JTextField(12);
         JTextField modelField = new JTextField(12);
         JTextField yearField = new JTextField(12);
@@ -219,7 +216,7 @@ public class CarFrontend {
         }
     }
 
-    private void listCars() {
+    private void listCars() throws CarExceptionNoId {
         StringBuilder carList = new StringBuilder();
         for (CarModel car : carService.getAllCars()) {
             carList.append(car.toString()).append("\n");

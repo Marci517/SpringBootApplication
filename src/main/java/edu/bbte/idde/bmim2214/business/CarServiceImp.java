@@ -20,7 +20,7 @@ public class CarServiceImp implements CarService {
     }
 
     @Override
-    public void addCar(CarModel car) throws CarExceptionDates {
+    public void addCar(CarModel car) throws CarExceptionDates, CarExceptionNoId {
         log.info("add car");
         if (car.getPrice() > 0 && !car.getBrand().isEmpty()
                 && !car.getName().isEmpty()) {
@@ -69,7 +69,7 @@ public class CarServiceImp implements CarService {
     }
 
     @Override
-    public List<CarModel> getAllCars() {
+    public List<CarModel> getAllCars() throws CarExceptionNoId {
         log.info("get all cars");
         return carDao.getAllCars();
     }
