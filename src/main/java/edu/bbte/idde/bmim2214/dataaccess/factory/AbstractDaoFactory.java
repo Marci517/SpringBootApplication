@@ -7,7 +7,12 @@ public abstract class AbstractDaoFactory {
 
     public static AbstractDaoFactory getInstance() {
         if (instance == null) {
-            instance = new CarDaoJdbcFactory();
+            synchronized (AbstractDaoFactory.class) { // class lock
+                if (instance == null) {
+                    instance = new CarDaoJdbcFactory();
+                    //instance = new CarDaoMemoFactory();
+                }
+            }
         }
         return instance;
     }
