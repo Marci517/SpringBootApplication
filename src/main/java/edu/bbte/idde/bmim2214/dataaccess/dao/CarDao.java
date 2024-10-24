@@ -1,7 +1,6 @@
 package edu.bbte.idde.bmim2214.dataaccess.dao;
 
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionNoId;
-import edu.bbte.idde.bmim2214.dataaccess.factory.CarDaoJdbcFactory;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 
 import java.util.List;

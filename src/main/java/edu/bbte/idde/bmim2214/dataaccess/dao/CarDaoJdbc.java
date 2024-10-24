@@ -1,6 +1,5 @@
 package edu.bbte.idde.bmim2214.dataaccess.dao;
 
-import edu.bbte.idde.bmim2214.dataaccess.dao.CarDao;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionNoId;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 
@@ -23,7 +22,7 @@ public class CarDaoJdbc implements CarDao {
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/idee?useSSL=false");
         dataSource.setUsername("root");
-        dataSource.setPassword("ragaszto2002");
+        dataSource.setPassword("");
         dataSource.setMaximumPoolSize(4);
     }
 
@@ -64,7 +63,7 @@ public class CarDaoJdbc implements CarDao {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new CarExceptionNoId("There is no such an id");
         }
     }
 
@@ -89,11 +88,11 @@ public class CarDaoJdbc implements CarDao {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new CarExceptionNoId("There is no such an id");
         }
     }
 
-
+    @Override
     public CarModel readCar(long id) throws CarExceptionNoId {
         log.info("read car");
         String sqlString = "SELECT * FROM CarModel WHERE CarModel.id = ?";
@@ -118,7 +117,7 @@ public class CarDaoJdbc implements CarDao {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new CarExceptionNoId("There is no such an id");
         }
     }
 

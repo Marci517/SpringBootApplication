@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CarServiceImp implements CarService {
-    private CarDao carDao;
+    private final CarDao carDao;
     private static final Logger log = LoggerFactory.getLogger(CarServiceImp.class);
 
     public CarServiceImp(CarDao carDao) {

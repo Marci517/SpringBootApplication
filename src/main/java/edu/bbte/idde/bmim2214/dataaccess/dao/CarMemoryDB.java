@@ -1,21 +1,20 @@
 package edu.bbte.idde.bmim2214.dataaccess.dao;
 
-import edu.bbte.idde.bmim2214.business.CarServiceImp;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionNoId;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CarMemoryDB implements CarDao {
-    private Map<Long, CarModel> carDatabase = new HashMap<>();
+    private final Map<Long, CarModel> carDatabase = new ConcurrentHashMap<>();
     private static final Logger log = LoggerFactory.getLogger(CarMemoryDB.class);
-    private long currentId = 0;
+    private long currentId;
 
     @Override
     public void createCar(CarModel car) {
