@@ -29,92 +29,98 @@ public class CarFrontend {
         JFrame frame = new JFrame("Car Reselling");
         frame.setSize(700, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JButton addCarButton = new JButton("Add Car");
-        JButton updateCarButton = new JButton("Update Car");
-        JButton deleteCarButton = new JButton("Delete Car");
-        JButton getCarButton = new JButton("Search Car");
-        JButton listCarsButton = new JButton("List Cars");
-
+        addButtonsToFrame(frame);
         frame.setLayout(new FlowLayout());
+        frame.setVisible(true);
+    }
+
+    private void addButtonsToFrame(JFrame frame) {
+        JButton addCarButton = createButton("Add Car", this::addCarAction);
+        JButton updateCarButton = createButton("Update Car", this::updateCarAction);
+        JButton deleteCarButton = createButton("Delete Car", this::deleteCarAction);
+        JButton getCarButton = createButton("Search Car", this::getCarAction);
+        JButton listCarsButton = createButton("List Cars", this::listCarsAction);
+
         frame.add(addCarButton);
         frame.add(updateCarButton);
         frame.add(deleteCarButton);
         frame.add(getCarButton);
         frame.add(listCarsButton);
+    }
 
-        addCarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                log.info("add car");
-                try {
-                    addCar();
-                } catch (IllegalArgumentException ex) {
-                    JOptionPane.showMessageDialog(null, "Wrong parameters");
-                } catch (ParseException ex) {
-                    JOptionPane.showMessageDialog(null, "Wrong date format. Usage: yyyy-mm-dd");
-                } catch (CarExceptionDates ex) {
-                    JOptionPane.showMessageDialog(null, "The year should be between 1900 and the current year.");
-                } catch (CarExceptionNoId ex) {
-                    JOptionPane.showMessageDialog(null, "Failed to insert the car.");
-                }
-            }
-        });
+    private JButton createButton(String text, ActionListener action) {
+        JButton button = new JButton(text);
+        button.addActionListener(action);
+        return button;
+    }
 
-        updateCarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                log.info("update car");
-                try {
-                    updateCar();
-                } catch (CarExceptionNoId ex) {
-                    JOptionPane.showMessageDialog(null, "Id does not exist");
-                } catch (IllegalArgumentException ex) {
-                    JOptionPane.showMessageDialog(null, "Wrong parameters");
-                } catch (ParseException ex) {
-                    JOptionPane.showMessageDialog(null, "Wrong date format. Usage: yyyy-mm-dd");
-                } catch (CarExceptionDates ex) {
-                    JOptionPane.showMessageDialog(null, "The year should be between 1900 and the current year.");
-                }
-            }
-        });
+    private void addCarAction(ActionEvent e) {
+        log.info("add car");
+        try {
+            addCar();
+        } catch (IllegalArgumentException | ParseException | CarExceptionDates | CarExceptionNoId ex) {
+            handleAddExceptions(ex);
+        }
+    }
 
-        deleteCarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                log.info("delete car");
-                try {
-                    deleteCar();
-                } catch (CarExceptionNoId | IllegalArgumentException ex) {
-                    JOptionPane.showMessageDialog(null, "Id does not exist");
-                }
-            }
-        });
+    private void updateCarAction(ActionEvent e) {
+        log.info("update car");
+        try {
+            updateCar();
+        } catch (IllegalArgumentException | ParseException | CarExceptionDates | CarExceptionNoId ex) {
+            handleUpdateExceptions(ex);
+        }
+    }
 
-        getCarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                log.info("get car");
-                try {
-                    getCar();
-                } catch (CarExceptionNoId | IllegalArgumentException ex) {
-                    JOptionPane.showMessageDialog(null, "Id does not exist");
-                }
-            }
-        });
-        listCarsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                log.info("get all cars");
-                try {
-                    listCars();
-                } catch (CarExceptionNoId ex) {
-                    JOptionPane.showMessageDialog(null, "Failed to get all cars.");
-                }
-            }
-        });
+    private void deleteCarAction(ActionEvent e) {
+        log.info("delete car");
+        try {
+            deleteCar();
+        } catch (IllegalArgumentException | CarExceptionNoId ex) {
+            JOptionPane.showMessageDialog(null, "Id does not exist");
+        }
+    }
 
-        frame.setVisible(true);
+    private void getCarAction(ActionEvent e) {
+        log.info("get car");
+        try {
+            getCar();
+        } catch (IllegalArgumentException | CarExceptionNoId ex) {
+            JOptionPane.showMessageDialog(null, "Id does not exist");
+        }
+    }
+
+    private void listCarsAction(ActionEvent e) {
+        log.info("get all cars");
+        try {
+            listCars();
+        } catch (CarExceptionNoId ex) {
+            JOptionPane.showMessageDialog(null, "Failed to get all cars.");
+        }
+    }
+
+    private void handleAddExceptions(Exception ex) {
+        if (ex instanceof IllegalArgumentException) {
+            JOptionPane.showMessageDialog(null, "Wrong parameters");
+        } else if (ex instanceof ParseException) {
+            JOptionPane.showMessageDialog(null, "Wrong date format. Usage: yyyy-mm-dd");
+        } else if (ex instanceof CarExceptionDates) {
+            JOptionPane.showMessageDialog(null, "The year should be between 1900 and the current year.");
+        } else if (ex instanceof CarExceptionNoId) {
+            JOptionPane.showMessageDialog(null, "Failed to insert the car.");
+        }
+    }
+
+    private void handleUpdateExceptions(Exception ex) {
+        if (ex instanceof IllegalArgumentException) {
+            JOptionPane.showMessageDialog(null, "Wrong parameters");
+        } else if (ex instanceof ParseException) {
+            JOptionPane.showMessageDialog(null, "Wrong date format. Usage: yyyy-mm-dd");
+        } else if (ex instanceof CarExceptionDates) {
+            JOptionPane.showMessageDialog(null, "The year should be between 1900 and the current year.");
+        } else if (ex instanceof CarExceptionNoId) {
+            JOptionPane.showMessageDialog(null, "Id does not exist");
+        }
     }
 
     private void addCar() throws ParseException, CarExceptionDates, CarExceptionNoId {
