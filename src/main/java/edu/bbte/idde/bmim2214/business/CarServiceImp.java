@@ -1,15 +1,19 @@
 package edu.bbte.idde.bmim2214.business;
 
 import edu.bbte.idde.bmim2214.business.exceptions.CarExceptionDates;
-import edu.bbte.idde.bmim2214.dataaccess.CarDao;
+import edu.bbte.idde.bmim2214.dataaccess.dao.CarDao;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionNoId;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class CarServiceImp implements CarService {
     private CarDao carDao;
+    private static final Logger LOG = LoggerFactory.getLogger(CarServiceImp.class);
 
     public CarServiceImp(CarDao carDao) {
         this.carDao = carDao;
@@ -17,6 +21,7 @@ public class CarServiceImp implements CarService {
 
     @Override
     public void addCar(CarModel car) throws CarExceptionDates {
+        LOG.info("add car");
         if (car.getPrice() > 0 && !car.getBrand().isEmpty()
                 && !car.getName().isEmpty()) {
             LocalDate currentDate = LocalDate.now();
@@ -34,12 +39,14 @@ public class CarServiceImp implements CarService {
 
     @Override
     public void deleteCar(int id) throws CarExceptionNoId {
+        LOG.info("delete car");
         carDao.deleteCar(id);
 
     }
 
     @Override
     public void updateCar(CarModel car) throws CarExceptionNoId, CarExceptionDates {
+        LOG.info("update car");
         if (car.getPrice() > 0 && !car.getBrand().isEmpty()
                 && !car.getName().isEmpty()) {
             LocalDate currentDate = LocalDate.now();
@@ -57,11 +64,13 @@ public class CarServiceImp implements CarService {
 
     @Override
     public CarModel getCar(int id) throws CarExceptionNoId {
+        LOG.info("get car");
         return carDao.readCar(id);
     }
 
     @Override
     public List<CarModel> getAllCars() {
+        LOG.info("get all cars");
         return carDao.getAllCars();
     }
 }

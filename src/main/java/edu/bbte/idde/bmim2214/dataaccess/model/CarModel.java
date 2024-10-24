@@ -1,6 +1,6 @@
 package edu.bbte.idde.bmim2214.dataaccess.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class CarModel extends BaseEntity {
     private String name;

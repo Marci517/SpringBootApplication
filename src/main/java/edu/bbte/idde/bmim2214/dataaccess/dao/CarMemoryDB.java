@@ -1,5 +1,6 @@
-package edu.bbte.idde.bmim2214.dataaccess;
+package edu.bbte.idde.bmim2214.dataaccess.dao;
 
+import edu.bbte.idde.bmim2214.business.CarServiceImp;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionNoId;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 
@@ -8,12 +9,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class CarMemoryDB implements CarDao {
     private Map<Long, CarModel> carDatabase = new HashMap<>();
+    private static final Logger LOG = LoggerFactory.getLogger(CarMemoryDB.class);
     private long currentId = 0;
 
     @Override
     public void createCar(CarModel car) {
+        LOG.info("create car");
         currentId++;
         car.setId(currentId);
         carDatabase.put(currentId, car);
@@ -21,6 +27,7 @@ public class CarMemoryDB implements CarDao {
 
     @Override
     public void deleteCar(long id) throws CarExceptionNoId {
+        LOG.info("delete car");
         if (carDatabase.containsKey(id)) {
             carDatabase.remove(id);
         } else {
@@ -31,6 +38,7 @@ public class CarMemoryDB implements CarDao {
 
     @Override
     public void updateCar(CarModel car) throws CarExceptionNoId {
+        LOG.info("update car");
         long id = car.getId();
         if (carDatabase.containsKey(id)) {
             carDatabase.put(id, car);
@@ -41,6 +49,7 @@ public class CarMemoryDB implements CarDao {
 
     @Override
     public CarModel readCar(long id) throws CarExceptionNoId {
+        LOG.info("read car");
         if (carDatabase.containsKey(id)) {
             return carDatabase.get(id);
         } else {
@@ -51,6 +60,7 @@ public class CarMemoryDB implements CarDao {
 
     @Override
     public List<CarModel> getAllCars() {
+        LOG.info("get all cars");
         return new ArrayList<>(carDatabase.values());
     }
 }

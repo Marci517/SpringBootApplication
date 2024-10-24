@@ -9,16 +9,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.text.ParseException;
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CarFrontend {
     private final CarService carService;
+    private static final Logger LOG = LoggerFactory.getLogger(CarFrontend.class);
+
 
     public CarFrontend(CarService carService) {
         this.carService = carService;
     }
 
     public void display() {
+        LOG.info("display");
         JFrame frame = new JFrame("Car Reselling");
         frame.setSize(700, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,6 +46,7 @@ public class CarFrontend {
         addCarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                LOG.info("add car");
                 try {
                     addCar();
                 } catch (IllegalArgumentException ex) {
@@ -57,6 +65,7 @@ public class CarFrontend {
         updateCarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                LOG.info("update car");
                 try {
                     updateCar();
                 } catch (CarExceptionNoId ex) {
@@ -78,6 +87,7 @@ public class CarFrontend {
         deleteCarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                LOG.info("delete car");
                 try {
                     deleteCar();
                 } catch (CarExceptionNoId | IllegalArgumentException ex) {
@@ -90,6 +100,7 @@ public class CarFrontend {
         getCarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                LOG.info("get car");
                 try {
                     getCar();
                 } catch (CarExceptionNoId | IllegalArgumentException ex) {
@@ -101,6 +112,7 @@ public class CarFrontend {
         listCarsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                LOG.info("get all cars");
                 listCars();
             }
         });
@@ -124,7 +136,9 @@ public class CarFrontend {
         panel.add(new JLabel("Price:"));
         panel.add(priceField);
 
-        Date today = new Date();
+        LocalDate localDate = LocalDate.now();
+        int year = localDate.getYear();
+        Date today = new Date(year - 1900, localDate.getMonthValue() - 1, localDate.getDayOfMonth());
         int result = JOptionPane.showConfirmDialog(null, panel, "Add Car", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
             CarModel car = new CarModel();
@@ -158,7 +172,8 @@ public class CarFrontend {
         panel.add(new JLabel("Price:"));
         panel.add(priceField);
 
-        Date today = new Date();
+        LocalDate localDate = LocalDate.now();
+        Date today = new Date(localDate.getYear() - 1900, localDate.getMonthValue() - 1, localDate.getDayOfMonth());
         int result = JOptionPane.showConfirmDialog(null, panel, "Update Car", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
             CarModel car = new CarModel();
