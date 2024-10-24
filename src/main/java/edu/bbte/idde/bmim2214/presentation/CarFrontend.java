@@ -202,7 +202,7 @@ public class CarFrontend {
         }
     }
 
-    private void getCar() throws CarExceptionNoId {
+    private String getCar() throws CarExceptionNoId {
         JTextField idField = new JTextField(12);
 
         JPanel panel = new JPanel();
@@ -213,13 +213,17 @@ public class CarFrontend {
 
             String carStr = carService.getCar(Integer.parseInt(idField.getText())).toString();
             JOptionPane.showMessageDialog(null, carStr, "Result", JOptionPane.INFORMATION_MESSAGE);
+            return carStr;
         }
+        return "cancel";
+
+
     }
 
     private void listCars() throws CarExceptionNoId {
         StringBuilder carList = new StringBuilder();
         for (CarModel car : carService.getAllCars()) {
-            carList.append(car.toString()).append("\n");
+            carList.append(car.toString()).append('\n');
         }
         JOptionPane.showMessageDialog(null, carList.toString(), "Car List", JOptionPane.INFORMATION_MESSAGE);
     }
