@@ -55,7 +55,7 @@ public class CarFrontend {
     }
 
     private void addCarAction(ActionEvent e) {
-        log.info("add car");
+        log.info("add car event triggered by: " + e.getActionCommand());
         try {
             addCar();
         } catch (IllegalArgumentException | ParseException | CarExceptionDates | CarExceptionNoId ex) {
@@ -64,7 +64,7 @@ public class CarFrontend {
     }
 
     private void updateCarAction(ActionEvent e) {
-        log.info("update car");
+        log.info("update car event triggered by: " + e.getActionCommand());
         try {
             updateCar();
         } catch (IllegalArgumentException | ParseException | CarExceptionDates | CarExceptionNoId ex) {
@@ -73,7 +73,7 @@ public class CarFrontend {
     }
 
     private void deleteCarAction(ActionEvent e) {
-        log.info("delete car");
+        log.info("delete car event triggered by: " + e.getActionCommand());
         try {
             deleteCar();
         } catch (IllegalArgumentException | CarExceptionNoId ex) {
@@ -82,7 +82,7 @@ public class CarFrontend {
     }
 
     private void getCarAction(ActionEvent e) {
-        log.info("get car");
+        log.info("get car event triggered by: " + e.getActionCommand());
         try {
             getCar();
         } catch (IllegalArgumentException | CarExceptionNoId ex) {
@@ -91,7 +91,7 @@ public class CarFrontend {
     }
 
     private void listCarsAction(ActionEvent e) {
-        log.info("get all cars");
+        log.info("get all cars event triggered by: " + e.getActionCommand());
         try {
             listCars();
         } catch (CarExceptionNoId ex) {
