@@ -33,7 +33,7 @@ public class CarServiceImp implements CarService {
                 carDao.createCar(car);
             }
         } else {
-            throw new IllegalArgumentException("Wrong paramaters");
+            throw new IllegalArgumentException("Wrong parameters");
         }
     }
 
@@ -58,7 +58,7 @@ public class CarServiceImp implements CarService {
                 carDao.updateCar(car);
             }
         } else {
-            throw new IllegalArgumentException("Wrong paramaters");
+            throw new IllegalArgumentException("Wrong parameters");
         }
     }
 

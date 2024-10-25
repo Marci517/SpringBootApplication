@@ -61,7 +61,7 @@ public class CarFrontend {
         log.info("add car event triggered by: " + e.getActionCommand());
         try {
             addCar();
-        } catch (IllegalArgumentException | ParseException | CarExceptionDates | CarExceptionNoId ex) {
+        } catch (IllegalArgumentException | CarExceptionDates | CarExceptionNoId | ParseException ex) {
             handleAddExceptions(ex);
         }
     }
@@ -156,6 +156,7 @@ public class CarFrontend {
             car.setUploadDate(today);
 
             carService.addCar(car);
+            //System.out.println(car.getId());
             JOptionPane.showMessageDialog(null, "Car added successfully!");
         }
     }
