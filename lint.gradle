@@ -18,6 +18,7 @@ apply plugin: com.github.spotbugs.snom.SpotBugsPlugin
 apply plugin: se.bjurr.violations.gradle.plugin.ViolationsGradlePlugin
 
 def configDir = buildscript.sourceFile.parentFile
+def javaVersion = Integer.valueOf(JavaVersion.current().toString())
 
 checkstyle {
     toolVersion = '10.12.4'
@@ -40,7 +41,7 @@ spotbugsMain {
 }
 
 pmd {
-    toolVersion = '6.55.0'
+    toolVersion = javaVersion  > 17 ? '7.7.0' : '6.45.0'
     ignoreFailures = true
     ruleSetFiles = files("${configDir}/pmd-ruleset.xml")
     ruleSets = []
