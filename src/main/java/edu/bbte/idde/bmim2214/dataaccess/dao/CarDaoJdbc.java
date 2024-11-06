@@ -1,6 +1,6 @@
 package edu.bbte.idde.bmim2214.dataaccess.dao;
 
-import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionNoId;
+import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 
 import java.sql.*;
@@ -27,7 +27,7 @@ public class CarDaoJdbc implements CarDao {
     }
 
     @Override
-    public void createCar(CarModel car) throws CarExceptionNoId {
+    public void createCar(CarModel car) throws CarExceptionDatabase {
         log.info("create car");
         String sqlString = "INSERT INTO CarModel (car_name, brand, car_year, price, uploadDate) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = dataSource.getConnection();
@@ -41,7 +41,8 @@ public class CarDaoJdbc implements CarDao {
             int affectedRows = sqlQuery.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new CarExceptionNoId("Failed to insert the car.");
+                log.info("Failed to insert the car.");
+                throw new CarExceptionDatabase("Failed to insert the car.");
             }
 
             ResultSet generatedKeys = sqlQuery.getGeneratedKeys();
@@ -50,13 +51,14 @@ public class CarDaoJdbc implements CarDao {
             }
 
         } catch (SQLException e) {
-            throw new CarExceptionNoId("Failed to insert the car.", e);
+            log.info("Failed to insert the car.");
+            throw new CarExceptionDatabase("Failed to insert the car.", e);
         }
     }
 
 
     @Override
-    public void deleteCar(long id) throws CarExceptionNoId {
+    public void deleteCar(long id) throws CarExceptionDatabase {
         log.info("delete car");
         String sqlString = "DELETE FROM CarModel WHERE CarModel.id = ?";
         try (Connection connection = dataSource.getConnection();
@@ -64,16 +66,18 @@ public class CarDaoJdbc implements CarDao {
             sqlQuery.setLong(1, id);
             int affectedRows = sqlQuery.executeUpdate();
             if (affectedRows == 0) {
-                throw new CarExceptionNoId("There is no such an id");
+                log.info("There is no such an id");
+                throw new CarExceptionDatabase("There is no such an id");
             }
 
         } catch (SQLException e) {
-            throw new CarExceptionNoId("There is no such an id", e);
+            log.info("There is no such an id");
+            throw new CarExceptionDatabase("There is no such an id", e);
         }
     }
 
     @Override
-    public void updateCar(CarModel car) throws CarExceptionNoId {
+    public void updateCar(CarModel car) throws CarExceptionDatabase {
         log.info("update car");
         String sqlString = "UPDATE CarModel"
                 + " SET car_name = ?, brand = ?, car_year = ?, price = ?, uploadDate = ? WHERE id = ?";
@@ -89,7 +93,8 @@ public class CarDaoJdbc implements CarDao {
             int affectedRows = sqlQuery.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new CarExceptionNoId("There is no such an id");
+                log.info("There is no such an id");
+                throw new CarExceptionDatabase("There is no such an id");
             }
 
             ResultSet generatedKeys = sqlQuery.getGeneratedKeys();
@@ -98,12 +103,13 @@ public class CarDaoJdbc implements CarDao {
             }
 
         } catch (SQLException e) {
-            throw new CarExceptionNoId("There is no such an id", e);
+            log.info("There is no such an id");
+            throw new CarExceptionDatabase("There is no such an id", e);
         }
     }
 
     @Override
-    public CarModel readCar(long id) throws CarExceptionNoId {
+    public CarModel readCar(long id) throws CarExceptionDatabase {
         log.info("read car");
         String sqlString = "SELECT * FROM CarModel WHERE CarModel.id = ?";
         try (Connection connection = dataSource.getConnection();
@@ -112,28 +118,22 @@ public class CarDaoJdbc implements CarDao {
 
             try (ResultSet resultSet = sqlQuery.executeQuery()) {
                 if (resultSet.next()) {
-                    CarModel car = new CarModel();
-                    car.setId(resultSet.getLong("id"));
-                    car.setName(resultSet.getString("car_name"));
-                    car.setBrand(resultSet.getString("brand"));
-                    car.setYear(resultSet.getInt("car_year"));
-                    car.setPrice(resultSet.getDouble("price"));
-                    car.setUploadDate(resultSet.getDate("uploadDate"));
-
-                    return car;
+                    return extractCarModel(resultSet);
                 } else {
-                    throw new CarExceptionNoId("There is no such an id");
+                    log.info("There is no such an id");
+                    throw new CarExceptionDatabase("There is no such an id");
                 }
             }
 
         } catch (SQLException e) {
-            throw new CarExceptionNoId("There is no such an id", e);
+            log.info("There is no such an id");
+            throw new CarExceptionDatabase("There is no such an id", e);
         }
     }
 
 
     @Override
-    public List<CarModel> getAllCars() throws CarExceptionNoId {
+    public List<CarModel> getAllCars() throws CarExceptionDatabase {
         log.info("get all cars");
         List<CarModel> carList = new ArrayList<>();
         String sqlString = "SELECT * FROM CarModel";
@@ -142,21 +142,25 @@ public class CarDaoJdbc implements CarDao {
              PreparedStatement sqlQuery = connection.prepareStatement(sqlString);
              ResultSet resultSet = sqlQuery.executeQuery()) {
             while (resultSet.next()) {
-                CarModel car = new CarModel();
-                car.setId(resultSet.getLong("id"));
-                car.setName(resultSet.getString("car_name"));
-                car.setBrand(resultSet.getString("brand"));
-                car.setYear(resultSet.getInt("car_year"));
-                car.setPrice(resultSet.getDouble("price"));
-                car.setUploadDate(resultSet.getDate("uploadDate"));
-
-                carList.add(car);
+                carList.add(extractCarModel(resultSet));
             }
         } catch (SQLException e) {
-            throw new CarExceptionNoId("Failed to get all cars.", e);
+            log.info("Failed to get all cars.");
+            throw new CarExceptionDatabase("Failed to get all cars.", e);
         }
 
         return carList;
+    }
+
+    private CarModel extractCarModel(ResultSet resultSet) throws SQLException {
+        CarModel car = new CarModel();
+        car.setId(resultSet.getLong("id"));
+        car.setName(resultSet.getString("car_name"));
+        car.setBrand(resultSet.getString("brand"));
+        car.setYear(resultSet.getInt("car_year"));
+        car.setPrice(resultSet.getDouble("price"));
+        car.setUploadDate(resultSet.getDate("uploadDate"));
+        return car;
     }
 
 }

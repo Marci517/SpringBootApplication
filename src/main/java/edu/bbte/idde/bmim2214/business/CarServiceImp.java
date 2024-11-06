@@ -2,7 +2,7 @@ package edu.bbte.idde.bmim2214.business;
 
 import edu.bbte.idde.bmim2214.business.exceptions.CarExceptionDates;
 import edu.bbte.idde.bmim2214.dataaccess.dao.CarDao;
-import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionNoId;
+import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 
 import java.time.LocalDate;
@@ -20,7 +20,7 @@ public class CarServiceImp implements CarService {
     }
 
     @Override
-    public void addCar(CarModel car) throws CarExceptionDates, CarExceptionNoId {
+    public void addCar(CarModel car) throws CarExceptionDates, CarExceptionDatabase {
         log.info("add car");
         if (car.getPrice() > 0 && !car.getBrand().isEmpty()
                 && !car.getName().isEmpty()) {
@@ -38,14 +38,14 @@ public class CarServiceImp implements CarService {
     }
 
     @Override
-    public void deleteCar(int id) throws CarExceptionNoId {
+    public void deleteCar(int id) throws CarExceptionDatabase {
         log.info("delete car");
         carDao.deleteCar(id);
 
     }
 
     @Override
-    public void updateCar(CarModel car) throws CarExceptionNoId, CarExceptionDates {
+    public void updateCar(CarModel car) throws CarExceptionDatabase, CarExceptionDates {
         log.info("update car");
         if (car.getPrice() > 0 && !car.getBrand().isEmpty()
                 && !car.getName().isEmpty()) {
@@ -63,13 +63,13 @@ public class CarServiceImp implements CarService {
     }
 
     @Override
-    public CarModel getCar(int id) throws CarExceptionNoId {
+    public CarModel getCar(int id) throws CarExceptionDatabase {
         log.info("get car");
         return carDao.readCar(id);
     }
 
     @Override
-    public List<CarModel> getAllCars() throws CarExceptionNoId {
+    public List<CarModel> getAllCars() throws CarExceptionDatabase {
         log.info("get all cars");
         return carDao.getAllCars();
     }

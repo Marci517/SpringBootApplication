@@ -2,7 +2,7 @@ package edu.bbte.idde.bmim2214.presentation;
 
 import edu.bbte.idde.bmim2214.business.*;
 import edu.bbte.idde.bmim2214.business.exceptions.CarExceptionDates;
-import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionNoId;
+import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 
 import javax.swing.*;
@@ -61,7 +61,7 @@ public class CarFrontend {
         log.info("add car event triggered by: " + e.getActionCommand());
         try {
             addCar();
-        } catch (IllegalArgumentException | CarExceptionDates | CarExceptionNoId | ParseException ex) {
+        } catch (IllegalArgumentException | CarExceptionDates | CarExceptionDatabase | ParseException ex) {
             handleAddExceptions(ex);
         }
     }
@@ -70,7 +70,7 @@ public class CarFrontend {
         log.info("update car event triggered by: " + e.getActionCommand());
         try {
             updateCar();
-        } catch (IllegalArgumentException | ParseException | CarExceptionDates | CarExceptionNoId ex) {
+        } catch (IllegalArgumentException | ParseException | CarExceptionDates | CarExceptionDatabase ex) {
             handleUpdateExceptions(ex);
         }
     }
@@ -79,7 +79,7 @@ public class CarFrontend {
         log.info("delete car event triggered by: " + e.getActionCommand());
         try {
             deleteCar();
-        } catch (IllegalArgumentException | CarExceptionNoId ex) {
+        } catch (IllegalArgumentException | CarExceptionDatabase ex) {
             JOptionPane.showMessageDialog(null, "Id does not exist");
         }
     }
@@ -88,7 +88,7 @@ public class CarFrontend {
         log.info("get car event triggered by: " + e.getActionCommand());
         try {
             return getCar();
-        } catch (IllegalArgumentException | CarExceptionNoId ex) {
+        } catch (IllegalArgumentException | CarExceptionDatabase ex) {
             JOptionPane.showMessageDialog(null, "Id does not exist");
             return "Id does not exist";
         }
@@ -98,7 +98,7 @@ public class CarFrontend {
         log.info("get all cars event triggered by: " + e.getActionCommand());
         try {
             listCars();
-        } catch (CarExceptionNoId ex) {
+        } catch (CarExceptionDatabase ex) {
             JOptionPane.showMessageDialog(null, "Failed to get all cars.");
         }
     }
@@ -110,7 +110,7 @@ public class CarFrontend {
             JOptionPane.showMessageDialog(null, "Wrong date format. Usage: yyyy-mm-dd");
         } else if (ex instanceof CarExceptionDates) {
             JOptionPane.showMessageDialog(null, "The year should be between 1900 and the current year.");
-        } else if (ex instanceof CarExceptionNoId) {
+        } else if (ex instanceof CarExceptionDatabase) {
             JOptionPane.showMessageDialog(null, "Failed to insert the car.");
         }
     }
@@ -122,12 +122,12 @@ public class CarFrontend {
             JOptionPane.showMessageDialog(null, "Wrong date format. Usage: yyyy-mm-dd");
         } else if (ex instanceof CarExceptionDates) {
             JOptionPane.showMessageDialog(null, "The year should be between 1900 and the current year.");
-        } else if (ex instanceof CarExceptionNoId) {
+        } else if (ex instanceof CarExceptionDatabase) {
             JOptionPane.showMessageDialog(null, "Id does not exist");
         }
     }
 
-    private void addCar() throws ParseException, CarExceptionDates, CarExceptionNoId {
+    private void addCar() throws ParseException, CarExceptionDates, CarExceptionDatabase {
         JTextField brandField = new JTextField(12);
         JTextField modelField = new JTextField(12);
         JTextField yearField = new JTextField(12);
@@ -161,7 +161,7 @@ public class CarFrontend {
         }
     }
 
-    private void updateCar() throws CarExceptionNoId, ParseException, CarExceptionDates {
+    private void updateCar() throws CarExceptionDatabase, ParseException, CarExceptionDates {
         JTextField idField = new JTextField(12);
         JTextField brandField = new JTextField(12);
         JTextField modelField = new JTextField(12);
@@ -198,7 +198,7 @@ public class CarFrontend {
 
     }
 
-    private void deleteCar() throws CarExceptionNoId {
+    private void deleteCar() throws CarExceptionDatabase {
         JTextField idField = new JTextField(12);
 
         JPanel panel = new JPanel();
@@ -213,7 +213,7 @@ public class CarFrontend {
         }
     }
 
-    private String getCar() throws CarExceptionNoId {
+    private String getCar() throws CarExceptionDatabase {
         JTextField idField = new JTextField(12);
 
         JPanel panel = new JPanel();
@@ -231,7 +231,7 @@ public class CarFrontend {
 
     }
 
-    private void listCars() throws CarExceptionNoId {
+    private void listCars() throws CarExceptionDatabase {
         StringBuilder carList = new StringBuilder();
         for (CarModel car : carService.getAllCars()) {
             carList.append(car.toString()).append('\n');
