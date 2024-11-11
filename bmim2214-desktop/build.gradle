@@ -1,0 +1,12 @@
+plugins {
+    id 'application'
+}
+
+dependencies {
+    implementation project(':bmim2214-backend')
+}
+
+application {
+    // a main metódust tartalmazó osztály megjelölése
+    mainClass = 'edu.bbte.idde.bmim2214.Main'
+}
