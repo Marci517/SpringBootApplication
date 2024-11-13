@@ -45,7 +45,7 @@ public class CarServletJsonapi extends HttpServlet {
             } catch (CarExceptionDatabase | IOException e) {
                 log.info("Failed to get all cars");
                 resp.setStatus(500);
-                resp.getWriter().write(" 500 Internal Server Error \n Failed to get all cars");
+                resp.getWriter().write("{\"error\": \"Internal Server Error \n Failed to get all cars\"}");
             }
         } else {
             try {
@@ -55,7 +55,7 @@ public class CarServletJsonapi extends HttpServlet {
             } catch (CarExceptionDatabase | IOException | NumberFormatException e) {
                 log.info("Id does not exist");
                 resp.setStatus(404);
-                resp.getWriter().write(" 404 Not found \n Id does not exist");
+                resp.getWriter().write("{\"error\": \"Not Found \n Id does not exist\"}");
             }
         }
     }
@@ -70,18 +70,18 @@ public class CarServletJsonapi extends HttpServlet {
         if (idStr == null) {
             log.info("Id does not exist");
             resp.setStatus(404);
-            resp.getWriter().write(" 404 Not found \n Id does not exist");
+            resp.getWriter().write("{\"error\": \"Not Found \n Id does not exist\"}");
 
         } else {
             try {
                 int id = Integer.parseInt(idStr);
                 carService.deleteCar(id);
-                resp.getWriter().write("Car deleted!");
+                resp.getWriter().write("{\"response\": \"Car deleted\"}");
                 log.info("Car deleted!");
             } catch (CarExceptionDatabase | IOException | NumberFormatException e) {
                 log.info("Id does not exist");
                 resp.setStatus(404);
-                resp.getWriter().write(" 404 Not found \n Id does not exist");
+                resp.getWriter().write("{\"error\": \"Not Found \n Id does not exist\"}");
             }
         }
     }
@@ -96,12 +96,12 @@ public class CarServletJsonapi extends HttpServlet {
             Date today = new Date(year - 1900, localDate.getMonthValue() - 1, localDate.getDayOfMonth());
             carModel.setUploadDate(today);
             carService.addCar(carModel);
-            resp.getWriter().write("Car added!");
+            resp.getWriter().write("{\"response\": \"Car added!\"}");
             log.info("Car added!");
         } catch (CarExceptionDates | CarExceptionDatabase | IllegalArgumentException | IOException e) {
             log.info("Failed to add car.");
             resp.setStatus(400);
-            resp.getWriter().write(" 400 Bad Request");
+            resp.getWriter().write("{\"error\": \"Bad Request\"}");
         }
     }
 
@@ -115,12 +115,12 @@ public class CarServletJsonapi extends HttpServlet {
             Date today = new Date(year - 1900, localDate.getMonthValue() - 1, localDate.getDayOfMonth());
             carModel.setUploadDate(today);
             carService.updateCar(carModel);
-            resp.getWriter().write("Car updated!");
+            resp.getWriter().write("{\"response\": \"Car updated!\"}");
             log.info("Car updated!");
         } catch (CarExceptionDates | CarExceptionDatabase | IllegalArgumentException | IOException e) {
             log.info("Failed to update car.");
             resp.setStatus(404);
-            resp.getWriter().write(" 404 Not Found");
+            resp.getWriter().write("{\"error\": \"Not Found\"}");
         }
     }
 }
