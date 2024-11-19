@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.bbte.idde.bmim2214.business.CarService;
 import edu.bbte.idde.bmim2214.business.CarServiceImp;
 import edu.bbte.idde.bmim2214.business.exceptions.CarExceptionDates;
-import edu.bbte.idde.bmim2214.dataaccess.dao.CarDao;
+import edu.bbte.idde.bmim2214.common.ErrorMessage;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
-import edu.bbte.idde.bmim2214.dataaccess.factory.AbstractDaoFactory;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -25,9 +24,7 @@ import java.util.TimeZone;
 public class CarServletJsonapi extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(CarServletJsonapi.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final AbstractDaoFactory abstractDaoFactory = AbstractDaoFactory.getInstance();
-    private final CarDao carDao = abstractDaoFactory.getCarDao();
-    private final CarService carService = new CarServiceImp(carDao);
+    private final CarService carService = new CarServiceImp();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -45,17 +42,25 @@ public class CarServletJsonapi extends HttpServlet {
             } catch (CarExceptionDatabase | IOException e) {
                 log.info("Failed to get all cars");
                 resp.setStatus(500);
-                resp.getWriter().write("{\"error\": \"Internal Server Error \n Failed to get all cars\"}");
+                ErrorMessage error = new ErrorMessage("Internal Server Error ",
+                        "Failed to get all cars");
+                objectMapper.writeValue(resp.getOutputStream(), error);
             }
         } else {
             try {
                 int id = Integer.parseInt(idStr);
                 CarModel carModel = carService.getCar(id);
                 objectMapper.writeValue(resp.getOutputStream(), carModel);
-            } catch (CarExceptionDatabase | IOException | NumberFormatException e) {
+            } catch (CarExceptionDatabase | IOException e) {
                 log.info("Id does not exist");
                 resp.setStatus(404);
-                resp.getWriter().write("{\"error\": \"Not Found \n Id does not exist\"}");
+                ErrorMessage error = new ErrorMessage("Not Found", "Id does not exist");
+                objectMapper.writeValue(resp.getOutputStream(), error);
+            } catch (NumberFormatException e) {
+                log.info("Id does not exist");
+                resp.setStatus(400);
+                ErrorMessage error = new ErrorMessage("Bad Request", "Id does not exist");
+                objectMapper.writeValue(resp.getOutputStream(), error);
             }
         }
     }
@@ -69,19 +74,27 @@ public class CarServletJsonapi extends HttpServlet {
 
         if (idStr == null) {
             log.info("Id does not exist");
-            resp.setStatus(404);
-            resp.getWriter().write("{\"error\": \"Not Found \n Id does not exist\"}");
+            resp.setStatus(400);
+            ErrorMessage error = new ErrorMessage("Bad Request", "Id does not exist");
+            objectMapper.writeValue(resp.getOutputStream(), error);
 
         } else {
             try {
                 int id = Integer.parseInt(idStr);
                 carService.deleteCar(id);
-                resp.getWriter().write("{\"response\": \"Car deleted\"}");
+                ErrorMessage error = new ErrorMessage("Success", "Car deleted");
+                objectMapper.writeValue(resp.getOutputStream(), error);
                 log.info("Car deleted!");
-            } catch (CarExceptionDatabase | IOException | NumberFormatException e) {
+            } catch (CarExceptionDatabase | IOException e) {
                 log.info("Id does not exist");
                 resp.setStatus(404);
-                resp.getWriter().write("{\"error\": \"Not Found \n Id does not exist\"}");
+                ErrorMessage error = new ErrorMessage("Not Found", "Id does not exist");
+                objectMapper.writeValue(resp.getOutputStream(), error);
+            } catch (NumberFormatException e) {
+                log.info("Id does not exist");
+                resp.setStatus(400);
+                ErrorMessage error = new ErrorMessage("Bad Request", "Id does not exist");
+                objectMapper.writeValue(resp.getOutputStream(), error);
             }
         }
     }
@@ -89,6 +102,7 @@ public class CarServletJsonapi extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         log.info("POST /carModels");
+        resp.setHeader("Content-Type", "application/json");
         try {
             CarModel carModel = objectMapper.readValue(req.getInputStream(), CarModel.class);
             LocalDate localDate = LocalDate.now();
@@ -96,18 +110,31 @@ public class CarServletJsonapi extends HttpServlet {
             Date today = new Date(year - 1900, localDate.getMonthValue() - 1, localDate.getDayOfMonth());
             carModel.setUploadDate(today);
             carService.addCar(carModel);
-            resp.getWriter().write("{\"response\": \"Car added!\"}");
+            ErrorMessage error = new ErrorMessage("Success", "Car added");
+            objectMapper.writeValue(resp.getOutputStream(), error);
             log.info("Car added!");
-        } catch (CarExceptionDates | CarExceptionDatabase | IllegalArgumentException | IOException e) {
+        } catch (CarExceptionDates e) {
             log.info("Failed to add car.");
             resp.setStatus(400);
-            resp.getWriter().write("{\"error\": \"Bad Request\"}");
+            ErrorMessage error = new ErrorMessage("Bad Request", "Dates should be between 1900 - actual year");
+            objectMapper.writeValue(resp.getOutputStream(), error);
+        } catch (IllegalArgumentException e) {
+            log.info("Failed to add car.");
+            resp.setStatus(400);
+            ErrorMessage error = new ErrorMessage("Bad Request", "Wrong parameters");
+            objectMapper.writeValue(resp.getOutputStream(), error);
+        } catch (CarExceptionDatabase | IOException e) {
+            log.info("Failed to add car.");
+            resp.setStatus(500);
+            ErrorMessage error = new ErrorMessage("Internal Server Error", "Failed to add car.");
+            objectMapper.writeValue(resp.getOutputStream(), error);
         }
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         log.info("PUT /carModels");
+        resp.setHeader("Content-Type", "application/json");
         try {
             CarModel carModel = objectMapper.readValue(req.getInputStream(), CarModel.class);
             LocalDate localDate = LocalDate.now();
@@ -115,12 +142,29 @@ public class CarServletJsonapi extends HttpServlet {
             Date today = new Date(year - 1900, localDate.getMonthValue() - 1, localDate.getDayOfMonth());
             carModel.setUploadDate(today);
             carService.updateCar(carModel);
-            resp.getWriter().write("{\"response\": \"Car updated!\"}");
+            ErrorMessage error = new ErrorMessage("Success", "Car updated");
+            objectMapper.writeValue(resp.getOutputStream(), error);
             log.info("Car updated!");
-        } catch (CarExceptionDates | CarExceptionDatabase | IllegalArgumentException | IOException e) {
+        } catch (CarExceptionDatabase e) {
             log.info("Failed to update car.");
             resp.setStatus(404);
-            resp.getWriter().write("{\"error\": \"Not Found\"}");
+            ErrorMessage error = new ErrorMessage("Not Found ", "Id does not exist.");
+            objectMapper.writeValue(resp.getOutputStream(), error);
+        } catch (CarExceptionDates e) {
+            log.info("Failed to update car.");
+            resp.setStatus(400);
+            ErrorMessage error = new ErrorMessage("Bad Request", "Dates should be between 1900 - actual year");
+            objectMapper.writeValue(resp.getOutputStream(), error);
+        } catch (IllegalArgumentException e) {
+            log.info("Failed to update car.");
+            resp.setStatus(400);
+            ErrorMessage error = new ErrorMessage("Bad Request", "Wrong parameters");
+            objectMapper.writeValue(resp.getOutputStream(), error);
+        } catch (IOException e) {
+            log.info("Failed to update car.");
+            resp.setStatus(500);
+            ErrorMessage error = new ErrorMessage("Internal Server Error", "Failed to update car.");
+            objectMapper.writeValue(resp.getOutputStream(), error);
         }
     }
 }

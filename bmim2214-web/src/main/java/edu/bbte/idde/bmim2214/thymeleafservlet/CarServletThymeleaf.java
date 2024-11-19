@@ -2,9 +2,7 @@ package edu.bbte.idde.bmim2214.thymeleafservlet;
 
 import edu.bbte.idde.bmim2214.business.CarService;
 import edu.bbte.idde.bmim2214.business.CarServiceImp;
-import edu.bbte.idde.bmim2214.dataaccess.dao.CarDao;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
-import edu.bbte.idde.bmim2214.dataaccess.factory.AbstractDaoFactory;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -22,9 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @WebServlet("/carModelsThyme")
 public class CarServletThymeleaf extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(CarServletThymeleaf.class);
-    private final AbstractDaoFactory abstractDaoFactory = AbstractDaoFactory.getInstance();
-    private final CarDao carDao = abstractDaoFactory.getCarDao();
-    private final CarService carService = new CarServiceImp(carDao);
+    private final CarService carService = new CarServiceImp();
 
     @Override
     public void init() throws ServletException {
@@ -48,7 +44,7 @@ public class CarServletThymeleaf extends HttpServlet {
             } catch (CarExceptionDatabase | IOException e) {
                 log.info("Failed to get all cars");
                 resp.setStatus(500);
-                resp.getWriter().write(" 500 Internal Server Error \n Failed to get all cars");
+                resp.sendError(500, "Internal Server Error \n Failed to get all cars");
             }
         } else {
             try {
@@ -60,7 +56,7 @@ public class CarServletThymeleaf extends HttpServlet {
             } catch (CarExceptionDatabase | IOException | NumberFormatException e) {
                 log.info("Id does not exist");
                 resp.setStatus(404);
-                resp.getWriter().write(" 404 Not found \n Id does not exist");
+                resp.sendError(404, "Not found \n Id does not exist");
             }
         }
     }

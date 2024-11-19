@@ -6,11 +6,11 @@ import java.util.List;
 
 import com.zaxxer.hikari.HikariDataSource;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
+import edu.bbte.idde.bmim2214.dataaccess.factory.DataSourceFactory;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static edu.bbte.idde.bmim2214.profile.ProfileProvider.getProfile;
 
 public class CarDaoJdbc implements CarDao {
 
@@ -19,12 +19,7 @@ public class CarDaoJdbc implements CarDao {
 
     public CarDaoJdbc() {
         log.info("hikari dataSource setup");
-        dataSource = new HikariDataSource();
-        dataSource.setDriverClassName(getProfile("driverClass"));
-        dataSource.setJdbcUrl(getProfile("url"));
-        dataSource.setUsername(getProfile("username"));
-        dataSource.setPassword(getProfile("password"));
-        dataSource.setMaximumPoolSize(Integer.parseInt(getProfile("poolSize")));
+        dataSource = DataSourceFactory.getDataSource();
     }
 
     @Override
