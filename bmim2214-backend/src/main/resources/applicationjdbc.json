@@ -1,0 +1,9 @@
+{
+  "profile": "jdbc",
+  "driverClass": "com.mysql.cj.jdbc.Driver",
+  "url": "jdbc:mysql://127.0.0.1:3306/idee?useSSL=false",
+  "username": "root",
+  "password": "semmi",
+  "poolSize": 4
+}
+

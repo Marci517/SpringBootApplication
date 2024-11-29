@@ -1,0 +1,71 @@
+/**
+ * Statikus web-erőforrások kitelepítése Tomcatre.
+ * A statikus állományok a "src/main/webapp" kontextusgyökérben találhatóak.
+ * A war plugin segítségével készítünk valid WAR állományt.
+ * Az alább meghatározott "deploy" és "undeploy" taszkokkal lehet futó Tomcatre telepíteni.
+ */
+
+
+plugins {
+    /**
+     * A "war" plugin:
+     * - megjelöli a "src/main/webapp" foldert, mint web-kontextus-gyökér
+     * - elkészíti a "war" taszkot, amely telepíthető WAR állományt készít
+     */
+    id 'war'
+}
+
+
+/**
+ * Megadja a Tomcat URL alapot.
+ * Pl. az alábbi beállítással a projekt context root-ja: http://localhost:8080/war-static-example/...
+ * A "ROOT" értékkel a gyökérre deployolja a rendszer.
+ */
+def deploymentName = 'bmim2214-web'
+
+// beolvassuk környezeti változóból, hogy hova van telepítve a Tomcat
+def tomcatHome = System.getenv('CATALINA_HOME')
+logger.quiet("Tomcat home detected as '${tomcatHome}'")
+
+
+// ezzel a taszkkal telepítjük ki a wart a Tomcatre
+task deploy(type: Copy, dependsOn: 'war') {
+
+    // futás előtt megnézzük, hogy a Tomcat home-ja helyesen be van-e állítva
+    doFirst {
+        if (!tomcatHome) {
+            throw new InvalidUserDataException("Tomcat home (CATALINA_HOME) not set")
+        }
+    }
+
+    // a "war" task kimenetét másoljuk
+    from war.archiveFile
+
+    // átnevezzük a war állományt a megfelelő contextRoot kialakításáért
+    rename war.archiveFileName.get(), "${deploymentName}.war"
+
+    // a másolás célpontja a Tomcat "webapps" almappája
+    into "${tomcatHome}/webapps"
+}
+
+
+// Tomcat kitelepítés törlése
+task undeploy(type: Delete) {
+
+    // futás előtt megnézzük, hogy a Tomcat home-ja helyesen be van-e állítva
+    doFirst {
+        if (!tomcatHome) {
+            throw new InvalidUserDataException("Tomcat home (CATALINA_HOME) not set")
+        }
+    }
+
+    // töröljük a kitelepített war file-t
+    delete "${tomcatHome}/webapps/${deploymentName}.war"
+}
+
+dependencies {implementation project(':bmim2214-backend')
+    compileOnly group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.1.0'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.18.0'
+    implementation group: 'org.thymeleaf', name: 'thymeleaf', version: '3.1.2.RELEASE'
+
+}

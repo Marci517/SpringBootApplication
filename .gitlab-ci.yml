@@ -3,12 +3,12 @@ stages:
 
 lint:
   stage: lint
-  image: gradle:7.5.1-jdk17-focal
+  image: gradle:8.4.0-jdk21-jammy
   before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
   script:
     # lint and compile projects
-    - gradle build --console=verbose --no-daemon
+    - gradle build --console=plain --no-daemon
   cache:
     paths:
       - .gradle

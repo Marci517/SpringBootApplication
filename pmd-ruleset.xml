@@ -13,17 +13,14 @@
     <rule ref="category/java/bestpractices.xml">
         <exclude name="GuardLogStatement"/>
         <exclude name="AbstractClassWithoutAbstractMethod"/>
-        <exclude name="JUnitTestsShouldIncludeAssert"/>
         <exclude name="PreserveStackTrace"/>
-        <!--<exclude name="JUnitTestContainsTooManyAsserts"/>-->
-        <!--<exclude name="AvoidPrintStackTrace"/>-->
     </rule>
 
     <!--codestyle -->
     <rule ref="category/java/codestyle.xml">
-        <exclude name="DefaultPackage"/>
-        <!--<exclude name="ConfusingTernary"/>-->
-        <!--<exclude name="AbstractNaming"/>-->
+        <!-- <exclude name="NoPackage"/> -->
+        <!-- <exclude name="ConfusingTernary"/> -->
+        <!-- <exclude name="AbstractNaming"/> -->
         <exclude name="OnlyOneReturn"/>
         <exclude name="AtLeastOneConstructor"/>
         <exclude name="FieldNamingConventions"/>
@@ -36,6 +33,7 @@
         <exclude name="PackageCase"/>
         <exclude name="UseUnderscoresInNumericLiterals"/>
         <exclude name="CommentDefaultAccessModifier"/>
+        <exclude name="UseExplicitTypes"/>
     </rule>
     <rule ref="category/java/codestyle.xml/ShortVariable">
         <properties>
@@ -69,6 +67,7 @@
         <!-- <exclude name="TooManyFields"/> -->
         <!-- <exclude name="CyclomaticComplexity"/> -->
         <exclude name="ExcessiveImports"/>
+        <exclude name="AvoidUncheckedExceptionsInSignatures"/>
     </rule>
     <rule ref="category/java/design.xml/TooManyMethods">
         <properties>
@@ -97,9 +96,8 @@
     <!-- errorprone-->
     <rule ref="category/java/errorprone.xml">
         <exclude name="CloseResource"/>
-        <exclude name="DataflowAnomalyAnalysis"/>
         <exclude name="MissingSerialVersionUID"/>
-        <!--<exclude name="BeanMembersShouldSerialize"/> -->
+        <exclude name="ConstructorCallsOverridableMethod"/>
         <exclude name="AvoidDuplicateLiterals"/>
         <exclude name="AvoidLiteralsInIfCondition"/>
         <!--<exclude name="UseLocaleWithCaseConversions"/>-->
@@ -119,6 +117,7 @@
         <exclude name="ConsecutiveAppendsShouldReuse"/>
         <exclude name="InsufficientStringBufferDeclaration"/>
         <exclude name="AvoidInstantiatingObjectsInLoops"/>
+        <exclude name="AddEmptyString"/>
     </rule>
 
     <!-- security -->

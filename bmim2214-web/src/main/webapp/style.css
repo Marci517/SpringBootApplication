@@ -1,0 +1,9 @@
+.carDetail {
+    font-size: 20px;
+    font-family: "Andale Mono", sans-serif, monospace;
+    color: black;
+}
+
+body {
+    background-color: aqua;
+}

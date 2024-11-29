@@ -1,0 +1,10 @@
+
+dependencies {
+    runtimeOnly group: 'com.mysql', name: 'mysql-connector-j', version: '8.0.33'
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.0.1'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.18.1'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.18.0'
+
+}
+
+
