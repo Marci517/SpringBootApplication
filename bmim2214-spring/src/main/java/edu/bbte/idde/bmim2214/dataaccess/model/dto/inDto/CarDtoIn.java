@@ -1,4 +1,4 @@
-package edu.bbte.idde.bmim2214.dataaccess.model.dto.in;
+package edu.bbte.idde.bmim2214.dataaccess.model.dto.inDto;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;
