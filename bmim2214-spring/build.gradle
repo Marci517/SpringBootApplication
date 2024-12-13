@@ -1,0 +1,20 @@
+plugins {
+    id 'org.springframework.boot' version '3.4.0'
+}
+
+
+dependencies {
+    runtimeOnly group: 'com.mysql', name: 'mysql-connector-j', version: '8.0.33'
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.0.1'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter', version: '3.4.0'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '3.4.0'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.36'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.36'
+    implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.6.3'
+    annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.6.3'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '3.4.0'
+
+
+}
+
+
