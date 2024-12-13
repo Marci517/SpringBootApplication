@@ -1,4 +1,4 @@
-package edu.bbte.idde.bmim2214.dataaccess.model.dto.outdto;
+package edu.bbte.idde.bmim2214.controller.dto.outdto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

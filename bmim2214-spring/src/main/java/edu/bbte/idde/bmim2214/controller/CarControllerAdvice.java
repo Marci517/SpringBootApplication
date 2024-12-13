@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 @org.springframework.web.bind.annotation.ControllerAdvice
 @Slf4j
-public class ControllerAdvice {
+public class CarControllerAdvice {
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
@@ -34,7 +34,7 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler(CarExceptionDatabase.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public String handleCarExceptionDatabase(CarExceptionDatabase e) {
         return e.getMessage();
@@ -44,6 +44,13 @@ public class ControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public String handleCarExceptionDatabase(CarExceptionDates e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(NumberFormatException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public String handleNumberFormatException(NumberFormatException e) {
         return e.getMessage();
     }
 }

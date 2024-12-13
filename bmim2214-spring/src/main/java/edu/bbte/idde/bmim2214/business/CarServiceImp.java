@@ -23,7 +23,7 @@ public class CarServiceImp implements CarService {
     }
 
     @Override
-    public void addCar(CarModel car) throws CarExceptionDatabase, CarExceptionDates {
+    public CarModel addCar(CarModel car) throws CarExceptionDatabase, CarExceptionDates {
         log.info("add car");
         LocalDate currentDate = LocalDate.now();
         int currentYear = currentDate.getYear();
@@ -32,7 +32,9 @@ public class CarServiceImp implements CarService {
             throw new CarExceptionDates("The year should be between 1900 and the current year.");
         } else {
             carDao.createCar(car);
+            return car;
         }
+
     }
 
     @Override
@@ -43,7 +45,7 @@ public class CarServiceImp implements CarService {
     }
 
     @Override
-    public void updateCar(CarModel car) throws CarExceptionDatabase, CarExceptionDates {
+    public CarModel updateCar(CarModel car) throws CarExceptionDatabase, CarExceptionDates {
         log.info("update car");
         LocalDate currentDate = LocalDate.now();
         int currentYear = currentDate.getYear();
@@ -52,8 +54,8 @@ public class CarServiceImp implements CarService {
             throw new CarExceptionDates("The year should be between 1900 and the current year.");
         } else {
             carDao.updateCar(car);
+            return car;
         }
-
     }
 
     @Override

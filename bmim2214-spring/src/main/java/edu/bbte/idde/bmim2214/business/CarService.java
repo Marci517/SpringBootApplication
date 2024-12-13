@@ -7,11 +7,11 @@ import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 import java.util.List;
 
 public interface CarService {
-    void addCar(CarModel car) throws CarExceptionDatabase, CarExceptionDates;
+    CarModel addCar(CarModel car) throws CarExceptionDatabase, CarExceptionDates;
 
     void deleteCar(int id) throws CarExceptionDatabase;
 
-    void updateCar(CarModel car) throws CarExceptionDatabase, CarExceptionDates;
+    CarModel updateCar(CarModel car) throws CarExceptionDatabase, CarExceptionDates;
 
     CarModel getCar(int id) throws CarExceptionDatabase;
 

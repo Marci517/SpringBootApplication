@@ -1,9 +1,9 @@
-package edu.bbte.idde.bmim2214.dataaccess.model.mapper;
+package edu.bbte.idde.bmim2214.controller.mapper;
 
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
-import edu.bbte.idde.bmim2214.dataaccess.model.dto.indto.CarDtoIn;
-import edu.bbte.idde.bmim2214.dataaccess.model.dto.outdto.CarDtoOut;
-import edu.bbte.idde.bmim2214.dataaccess.model.dto.outdto.CarShortDtoOut;
+import edu.bbte.idde.bmim2214.controller.dto.indto.CarDtoIn;
+import edu.bbte.idde.bmim2214.controller.dto.outdto.CarDtoOut;
+import edu.bbte.idde.bmim2214.controller.dto.outdto.CarShortDtoOut;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 
