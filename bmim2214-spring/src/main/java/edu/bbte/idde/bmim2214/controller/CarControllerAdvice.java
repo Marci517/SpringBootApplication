@@ -36,21 +36,21 @@ public class CarControllerAdvice {
     @ExceptionHandler(CarExceptionDatabase.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public String handleCarExceptionDatabase(CarExceptionDatabase e) {
-        return e.getMessage();
+    public Stream<String> handleCarExceptionDatabase(CarExceptionDatabase e) {
+        return Stream.of(e.getMessage());
     }
 
     @ExceptionHandler(CarExceptionDates.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public String handleCarExceptionDatabase(CarExceptionDates e) {
-        return e.getMessage();
+    public Stream<String> handleCarExceptionDatabase(CarExceptionDates e) {
+        return Stream.of(e.getMessage());
     }
 
     @ExceptionHandler(NumberFormatException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public String handleNumberFormatException(NumberFormatException e) {
-        return e.getMessage();
+    public Stream<String> handleNumberFormatException(NumberFormatException e) {
+        return Stream.of(e.getMessage());
     }
 }
