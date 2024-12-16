@@ -31,6 +31,7 @@ public class CarController {
     }
 
     @GetMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:5173")
     public CarDtoOut getCar(@PathVariable String id) throws CarExceptionDatabase, NumberFormatException {
         log.info("GET/cars/id");
         CarModel car = service.getCar(Integer.parseInt(id));
@@ -39,6 +40,7 @@ public class CarController {
 
 
     @GetMapping
+    @CrossOrigin(origins = "http://localhost:5173")
     public List<CarShortDtoOut> getAllCarsFromSpecYear(@RequestParam(value = "year", required = false) String year)
             throws CarExceptionDatabase, NumberFormatException {
         log.info("GET/cars/{year}");
@@ -50,12 +52,14 @@ public class CarController {
     }
 
     @DeleteMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:5173")
     public void deleteCar(@PathVariable String id) throws CarExceptionDatabase, NumberFormatException {
         log.info("DELETE/cars/{id}");
         service.deleteCar(Integer.parseInt(id));
     }
 
     @PostMapping
+    @CrossOrigin(origins = "http://localhost:5173")
     public CarDtoOut addCar(@RequestBody @Valid CarDtoIn car)
             throws CarExceptionDatabase, CarExceptionDates {
         log.info("POST/cars");
@@ -69,6 +73,7 @@ public class CarController {
     }
 
     @PutMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:5173")
     public CarDtoOut updateCar(@PathVariable String id, @RequestBody @Valid CarDtoIn car)
             throws CarExceptionDatabase, CarExceptionDates, NumberFormatException {
         log.info("PUT/car/id");
