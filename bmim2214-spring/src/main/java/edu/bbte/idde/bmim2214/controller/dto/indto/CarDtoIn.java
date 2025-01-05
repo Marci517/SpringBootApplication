@@ -1,9 +1,11 @@
 package edu.bbte.idde.bmim2214.controller.dto.indto;
 
+import edu.bbte.idde.bmim2214.dataaccess.model.CarExtra;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.sql.Date;
+import java.util.List;
 
 @Data
 public class CarDtoIn {
@@ -18,4 +20,5 @@ public class CarDtoIn {
     @NotNull
     @Min(value = 0, message = "The price should be >= 0")
     private double price;
+    private List<CarExtra> extras;
 }

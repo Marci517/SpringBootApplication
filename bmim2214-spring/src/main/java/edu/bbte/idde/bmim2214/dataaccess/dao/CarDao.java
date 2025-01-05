@@ -9,13 +9,13 @@ public interface CarDao {
 
     void createCar(CarModel car) throws CarExceptionDatabase;
 
-    void deleteCar(long id) throws CarExceptionDatabase;
+    void deleteById(long id) throws CarExceptionDatabase;
 
     void updateCar(CarModel car) throws CarExceptionDatabase;
 
-    CarModel readCar(long id) throws CarExceptionDatabase;
+    CarModel findById(long id) throws CarExceptionDatabase;
 
-    List<CarModel> getAllCars() throws CarExceptionDatabase;
+    List<CarModel> findAll() throws CarExceptionDatabase;
 
     List<CarModel> getAllCarsFromSpecYear(int year) throws CarExceptionDatabase;
 

@@ -1,16 +1,20 @@
 package edu.bbte.idde.bmim2214.dataaccess.configuration;
 
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-@Profile("jdbc")
+@Profile("!memory")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Configuration
-@ConfigurationProperties(prefix = "jdbc")
+@ConfigurationProperties(prefix = "nomemodb")
 
 public class DataSourceConfig {
     private String driverClass;
