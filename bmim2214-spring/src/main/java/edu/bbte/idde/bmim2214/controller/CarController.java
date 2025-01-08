@@ -1,6 +1,6 @@
-package edu.bbte.idde.bmim2214.controller.jpacontrollers;
+package edu.bbte.idde.bmim2214.controller;
 
-import edu.bbte.idde.bmim2214.business.jpaservices.CarServiceImpJpa;
+import edu.bbte.idde.bmim2214.business.CarServiceImp;
 import edu.bbte.idde.bmim2214.business.exceptions.CarExceptionDates;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
@@ -11,7 +11,6 @@ import edu.bbte.idde.bmim2214.controller.mapper.CarMapper;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -20,23 +19,22 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@Profile("jpa")
 @CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/cars")
-public class CarControllerJpa {
+public class CarController {
     private final CarMapper mapper;
-    private final CarServiceImpJpa service;
+    private final CarServiceImp service;
 
     @Autowired
-    public CarControllerJpa(CarMapper mapper, CarServiceImpJpa service) {
+    public CarController(CarMapper mapper, CarServiceImp service) {
         this.mapper = mapper;
         this.service = service;
     }
 
     @GetMapping("/{id}")
-    public CarDtoOut getCar(@PathVariable String id) throws CarExceptionDatabase, NumberFormatException {
+    public CarDtoOut getCar(@PathVariable Long id) throws CarExceptionDatabase, NumberFormatException {
         log.info("GET/cars/id");
-        CarModel car = service.findById(Long.parseLong(id));
+        CarModel car = service.findById(id);
         return mapper.carToDto(car);
     }
 
@@ -53,9 +51,9 @@ public class CarControllerJpa {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable String id) throws CarExceptionDatabase, NumberFormatException {
+    public void deleteById(@PathVariable Long id) throws CarExceptionDatabase, NumberFormatException {
         log.info("DELETE/cars/{id}");
-        service.deleteById(Long.parseLong(id));
+        service.deleteById(id);
     }
 
     @PostMapping
@@ -72,7 +70,7 @@ public class CarControllerJpa {
     }
 
     @PutMapping("/{id}")
-    public CarDtoOut updateCar(@PathVariable String id, @RequestBody @Valid CarDtoIn car)
+    public CarDtoOut updateCar(@PathVariable Long id, @RequestBody @Valid CarDtoIn car)
             throws CarExceptionDatabase, CarExceptionDates, NumberFormatException {
         log.info("PUT/car/id");
 
@@ -81,7 +79,7 @@ public class CarControllerJpa {
         CarModel carToSet = mapper.dtoToCar(car);
         Date today = new Date(year - 1900, localDate.getMonthValue() - 1, localDate.getDayOfMonth());
         carToSet.setUploadDate(today);
-        carToSet.setId(Long.parseLong(id));
+        carToSet.setId(id);
         return mapper.carToDto(service.updateCar(carToSet));
     }
 

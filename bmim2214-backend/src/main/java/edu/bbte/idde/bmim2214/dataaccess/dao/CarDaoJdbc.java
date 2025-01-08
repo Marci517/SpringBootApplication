@@ -7,13 +7,12 @@ import java.util.List;
 import com.zaxxer.hikari.HikariDataSource;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import edu.bbte.idde.bmim2214.dataaccess.factory.DataSourceFactory;
-import edu.bbte.idde.bmim2214.dataaccess.model.CarExtra;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class CarDaoJdbc implements AllDao {
+public class CarDaoJdbc implements CarDao {
 
     private final HikariDataSource dataSource;
     private static final Logger log = LoggerFactory.getLogger(CarDaoJdbc.class);
@@ -149,7 +148,7 @@ public class CarDaoJdbc implements AllDao {
         return carList;
     }
 
-    private CarModel extractCarModel(ResultSet resultSet) throws SQLException, CarExceptionDatabase {
+    private CarModel extractCarModel(ResultSet resultSet) throws SQLException {
         CarModel car = new CarModel();
         car.setId(resultSet.getLong("id"));
         car.setName(resultSet.getString("car_name"));
@@ -157,85 +156,7 @@ public class CarDaoJdbc implements AllDao {
         car.setYear(resultSet.getInt("car_year"));
         car.setPrice(resultSet.getDouble("price"));
         car.setUploadDate(resultSet.getDate("uploadDate"));
-        List<CarExtra> extras = getAllExtras(car.getId());
-        car.setCarExtras(extras);
         return car;
-    }
-
-    @Override
-    public List<CarExtra> getAllExtras(long carId) throws CarExceptionDatabase {
-        log.info("get all extras for car with id: {}", carId);
-        List<CarExtra> extras = new ArrayList<>();
-        String sqlString = "SELECT * FROM CarExtra WHERE car_id = ?";
-
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement sqlQuery = connection.prepareStatement(sqlString)) {
-            sqlQuery.setLong(1, carId);
-            try (ResultSet resultSet = sqlQuery.executeQuery()) {
-                while (resultSet.next()) {
-                    CarExtra extra = new CarExtra();
-                    extra.setId(resultSet.getLong("id"));
-                    extra.setDescription(resultSet.getString("description"));
-                    extras.add(extra);
-                }
-            }
-        } catch (SQLException e) {
-            log.error("Failed to fetch extras for car with id: {}", carId, e);
-            throw new CarExceptionDatabase("Failed to fetch extras for car with id: " + carId, e);
-        }
-
-        return extras;
-    }
-
-
-    @Override
-    public void addCarExtra(long carId, CarExtra carExtra) throws CarExceptionDatabase {
-        log.info("add extra for car with id: {}", carId);
-        String sqlString = "INSERT INTO CarExtra (description, car_id) VALUES (?, ?)";
-
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement sqlQuery = connection.prepareStatement(sqlString, Statement.RETURN_GENERATED_KEYS)) {
-            sqlQuery.setString(1, carExtra.getDescription());
-            sqlQuery.setLong(2, carId);
-
-            int affectedRows = sqlQuery.executeUpdate();
-            if (affectedRows == 0) {
-                log.error("Failed to add extra for car with id: {}", carId);
-                throw new CarExceptionDatabase("Failed to add extra for car with id: " + carId);
-            }
-
-            try (ResultSet generatedKeys = sqlQuery.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    carExtra.setId(generatedKeys.getLong(1));
-                }
-            }
-        } catch (SQLException e) {
-            log.error("Failed to add extra for car with id: {}", carId, e);
-            throw new CarExceptionDatabase("Failed to add extra for car with id: " + carId, e);
-        }
-    }
-
-
-    @Override
-    public void deleteCarExtra(long carId, long extraId) throws CarExceptionDatabase {
-        log.info("delete extra with id: {} from car with id: {}", extraId, carId);
-        String sqlString = "DELETE FROM CarExtra WHERE id = ? AND car_id = ?";
-
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement sqlQuery = connection.prepareStatement(sqlString)) {
-            sqlQuery.setLong(1, extraId);
-            sqlQuery.setLong(2, carId);
-
-            int affectedRows = sqlQuery.executeUpdate();
-            if (affectedRows == 0) {
-                log.error("No such extra with id: {} for car with id: {}", extraId, carId);
-                throw new CarExceptionDatabase("No such extra with id: " + extraId + " for car with id: " + carId);
-            }
-        } catch (SQLException e) {
-            log.error("Failed to delete extra with id: {} for car with id: {}", extraId, carId, e);
-            throw new CarExceptionDatabase("Failed to delete extra with id: "
-                    + extraId + " for car with id: " + carId, e);
-        }
     }
 
 }

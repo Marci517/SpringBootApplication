@@ -1,8 +1,8 @@
 package edu.bbte.idde.bmim2214.jsonapiservlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.bbte.idde.bmim2214.business.AllService;
-import edu.bbte.idde.bmim2214.business.serviceimps.AllServiceImp;
+import edu.bbte.idde.bmim2214.business.CarService;
+import edu.bbte.idde.bmim2214.business.CarServiceImp;
 import edu.bbte.idde.bmim2214.business.exceptions.CarExceptionDates;
 import edu.bbte.idde.bmim2214.common.ErrorMessage;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -25,7 +24,7 @@ import java.util.TimeZone;
 public class CarServletJsonapi extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(CarServletJsonapi.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final AllService carService = new AllServiceImp();
+    private final CarService carService = new CarServiceImp();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -106,7 +105,6 @@ public class CarServletJsonapi extends HttpServlet {
         resp.setHeader("Content-Type", "application/json");
         try {
             CarModel carModel = objectMapper.readValue(req.getInputStream(), CarModel.class);
-            carModel.setCarExtras(new ArrayList<>());
             LocalDate localDate = LocalDate.now();
             int year = localDate.getYear();
             Date today = new Date(year - 1900, localDate.getMonthValue() - 1, localDate.getDayOfMonth());

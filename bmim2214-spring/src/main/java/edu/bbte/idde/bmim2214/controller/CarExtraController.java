@@ -1,6 +1,6 @@
-package edu.bbte.idde.bmim2214.controller.memjdbcontrollers;
+package edu.bbte.idde.bmim2214.controller;
 
-import edu.bbte.idde.bmim2214.business.memjdbcservices.CarExtraServiceImp;
+import edu.bbte.idde.bmim2214.business.CarExtraService;
 import edu.bbte.idde.bmim2214.controller.dto.indto.CarExtraDtoIn;
 import edu.bbte.idde.bmim2214.controller.dto.outdto.CarExtraDtoOut;
 import edu.bbte.idde.bmim2214.controller.mapper.CarExtraMapper;
@@ -12,43 +12,43 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Profile("!jpa")
+@Profile("jpa")
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 @Slf4j
 @RequestMapping("/cars/{carId}/extras")
 public class CarExtraController {
 
-    private final CarExtraServiceImp carExtraService;
+    private final CarExtraService carExtraService;
     private final CarExtraMapper carExtraMapper;
 
     @Autowired
-    public CarExtraController(CarExtraServiceImp carExtraService, CarExtraMapper carExtraMapper) {
+    public CarExtraController(CarExtraService carExtraService, CarExtraMapper carExtraMapper) {
         this.carExtraService = carExtraService;
         this.carExtraMapper = carExtraMapper;
     }
 
     @GetMapping
-    public List<CarExtraDtoOut> getAllExtras(@PathVariable String carId)
+    public List<CarExtraDtoOut> getAllExtras(@PathVariable Long carId)
             throws CarExceptionDatabase, NumberFormatException {
         log.info("get all extras");
         return (List<CarExtraDtoOut>) carExtraMapper
-                .carExtrasToDtos(carExtraService.getAllExtras(Long.parseLong(carId)));
+                .carExtrasToDtos(carExtraService.getAllExtras(carId));
     }
 
     @PostMapping
-    public CarExtraDtoOut addCarExtra(@PathVariable String carId, @RequestBody CarExtraDtoIn carExtra)
+    public CarExtraDtoOut addCarExtra(@PathVariable Long carId, @RequestBody CarExtraDtoIn carExtra)
             throws CarExceptionDatabase, NumberFormatException {
         log.info("add an extra");
         return carExtraMapper.extraToDto(carExtraService
-                .addCarExtra(Long.parseLong(carId), carExtraMapper.dtoToExtra(carExtra)));
+                .addCarExtra(carId, carExtraMapper.dtoToExtra(carExtra)));
     }
 
     @DeleteMapping("/{extraId}")
-    public void deleteCarExtra(@PathVariable String carId, @PathVariable String extraId)
+    public void deleteCarExtra(@PathVariable Long carId, @PathVariable Long extraId)
             throws CarExceptionDatabase, NumberFormatException {
         log.info("delete an extra");
-        carExtraService.deleteCarExtra(Long.parseLong(carId), Long.parseLong(extraId));
+        carExtraService.deleteCarExtra(carId, extraId);
     }
 }
 

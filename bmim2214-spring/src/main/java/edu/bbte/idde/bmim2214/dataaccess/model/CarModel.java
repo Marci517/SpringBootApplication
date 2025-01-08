@@ -1,7 +1,6 @@
 package edu.bbte.idde.bmim2214.dataaccess.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -35,7 +34,6 @@ public class CarModel extends BaseEntity {
     private Date uploadDate;
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JsonManagedReference
     private List<CarExtra> extras = new ArrayList<>();
 
     @Override

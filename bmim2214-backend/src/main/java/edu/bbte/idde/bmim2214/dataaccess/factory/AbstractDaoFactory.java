@@ -1,6 +1,6 @@
 package edu.bbte.idde.bmim2214.dataaccess.factory;
 
-import edu.bbte.idde.bmim2214.dataaccess.dao.AllDao;
+import edu.bbte.idde.bmim2214.dataaccess.dao.CarDao;
 
 import static edu.bbte.idde.bmim2214.profile.ProfileProvider.getProfile;
 
@@ -20,5 +20,5 @@ public abstract class AbstractDaoFactory {
         return instance;
     }
 
-    public abstract AllDao getCarDao();
+    public abstract CarDao getCarDao();
 }

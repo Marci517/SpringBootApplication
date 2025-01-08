@@ -1,29 +1,25 @@
-package edu.bbte.idde.bmim2214.business.jpaservices;
+package edu.bbte.idde.bmim2214.business;
 
-import edu.bbte.idde.bmim2214.business.CarService;
 import edu.bbte.idde.bmim2214.business.exceptions.CarExceptionDates;
-import edu.bbte.idde.bmim2214.dataaccess.dao.repo.CarModelRepo;
+import edu.bbte.idde.bmim2214.dataaccess.dao.CarDao;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
-@Profile("jpa")
-public class CarServiceImpJpa implements CarService {
+public class CarServiceImp implements CarService {
 
-    private final CarModelRepo carModelRepo;
+    private final CarDao carDao;
 
     @Autowired
-    public CarServiceImpJpa(CarModelRepo carModelRepo) {
-        this.carModelRepo = carModelRepo;
+    public CarServiceImp(CarDao carDao) {
+        this.carDao = carDao;
     }
 
     @Override
@@ -35,7 +31,7 @@ public class CarServiceImpJpa implements CarService {
         if (car.getYear() > currentYear) {
             throw new CarExceptionDates("The year should be between 1900 and the current year.");
         } else {
-            carModelRepo.createCar(car);
+            carDao.createCar(car);
             return car;
         }
 
@@ -44,24 +40,28 @@ public class CarServiceImpJpa implements CarService {
     @Override
     public void deleteById(long id) throws CarExceptionDatabase {
         log.info("delete car");
-        Optional<CarModel> car = carModelRepo.findById(id);
-        car.orElseThrow(() -> new CarExceptionDatabase("Car not found with id: " + id));
-        carModelRepo.deleteById(id);
+        CarModel car = carDao.findById(id);
+        if (car == null) {
+            throw new CarExceptionDatabase("Car not found with id: " + id);
+        }
+        carDao.deleteById(id);
 
     }
 
     @Override
     public CarModel updateCar(CarModel car) throws CarExceptionDatabase, CarExceptionDates {
         log.info("update car");
-        Optional<CarModel> carToCheck = carModelRepo.findById(car.getId());
-        carToCheck.orElseThrow(() -> new CarExceptionDatabase("Car not found with id: " + car.getId()));
+        CarModel carToCheck = carDao.findById(car.getId());
+        if (carToCheck == null) {
+            throw new CarExceptionDatabase("Car not found with id: " + car.getId());
+        }
         LocalDate currentDate = LocalDate.now();
         int currentYear = currentDate.getYear();
 
         if (car.getYear() > currentYear) {
             throw new CarExceptionDates("The year should be between 1900 and the current year.");
         } else {
-            carModelRepo.updateCar(car);
+            carDao.updateCar(car);
             return car;
         }
     }
@@ -69,20 +69,23 @@ public class CarServiceImpJpa implements CarService {
     @Override
     public CarModel findById(long id) throws CarExceptionDatabase {
         log.info("get car");
-        Optional<CarModel> carToCheck = carModelRepo.findById(id);
-        return carToCheck.orElseThrow(() -> new CarExceptionDatabase("Car not found with id: " + id));
+        CarModel car = carDao.findById(id);
+        if (car == null) {
+            throw new CarExceptionDatabase("Car not found with id: " + id);
+        }
+        return car;
     }
 
     @Override
     public List<CarModel> findAll() throws CarExceptionDatabase {
         log.info("get all cars");
-        return carModelRepo.findAll();
+        return carDao.findAll();
     }
 
     @Override
     public List<CarModel> getAllCarsFromSpecYear(int year) throws CarExceptionDatabase {
         log.info("get all cars from a specific year");
-        return carModelRepo.getAllCarsFromSpecYear(year);
+        return carDao.getAllCarsFromSpecYear(year);
     }
 
 

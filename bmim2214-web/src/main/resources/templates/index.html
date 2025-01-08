@@ -14,14 +14,6 @@
     <span th:text="${carModel.year} + ', '"></span>
     <span th:text="${carModel.price} + ', '"></span>
     <span th:text="${carModel.uploadDate}"></span>
-    <div th:if="${!#lists.isEmpty(carModel.carExtras)}">
-        <ul>
-            <li th:each="extra : ${carModel.carExtras}" th:text="${extra.description}"></li>
-        </ul>
-    </div>
-    <div th:if="${#lists.isEmpty(carModel.carExtras)}">
-        <p>No extras available.</p>
-    </div>
 </div>
 
 <div th:if="${carModels != null and not #lists.isEmpty(carModels)}">
@@ -31,15 +23,6 @@
         <span th:text="${car.year} + ', '"></span>
         <span th:text="${car.price} + ', '"></span>
         <span th:text="${car.uploadDate}"></span><br>
-
-        <div th:if="${!#lists.isEmpty(car.carExtras)}">
-            <ul>
-                <li th:each="extra : ${car.carExtras}" th:text="${extra.description}"></li>
-            </ul>
-        </div>
-        <div th:if="${#lists.isEmpty(car.carExtras)}">
-            <p>No extras available.</p>
-        </div>
     </div>
 </div>
 

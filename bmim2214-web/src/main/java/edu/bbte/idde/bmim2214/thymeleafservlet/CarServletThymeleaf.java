@@ -1,7 +1,7 @@
 package edu.bbte.idde.bmim2214.thymeleafservlet;
 
-import edu.bbte.idde.bmim2214.business.AllService;
-import edu.bbte.idde.bmim2214.business.serviceimps.AllServiceImp;
+import edu.bbte.idde.bmim2214.business.CarService;
+import edu.bbte.idde.bmim2214.business.CarServiceImp;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 import jakarta.servlet.ServletException;
@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @WebServlet("/carModelsThyme")
 public class CarServletThymeleaf extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(CarServletThymeleaf.class);
-    private final AllService carService = new AllServiceImp();
+    private final CarService carService = new CarServiceImp();
 
     @Override
     public void init() throws ServletException {
