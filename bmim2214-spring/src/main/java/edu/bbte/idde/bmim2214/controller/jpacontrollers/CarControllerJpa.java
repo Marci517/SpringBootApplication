@@ -1,6 +1,6 @@
-package edu.bbte.idde.bmim2214.controller;
+package edu.bbte.idde.bmim2214.controller.jpacontrollers;
 
-import edu.bbte.idde.bmim2214.business.CarServiceImp;
+import edu.bbte.idde.bmim2214.business.jpaservices.CarServiceImpJpa;
 import edu.bbte.idde.bmim2214.business.exceptions.CarExceptionDates;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
@@ -11,6 +11,7 @@ import edu.bbte.idde.bmim2214.controller.mapper.CarMapper;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -19,14 +20,15 @@ import java.util.List;
 
 @RestController
 @Slf4j
+@Profile("jpa")
 @CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/cars")
-public class CarController {
+public class CarControllerJpa {
     private final CarMapper mapper;
-    private final CarServiceImp service;
+    private final CarServiceImpJpa service;
 
     @Autowired
-    public CarController(CarMapper mapper, CarServiceImp service) {
+    public CarControllerJpa(CarMapper mapper, CarServiceImpJpa service) {
         this.mapper = mapper;
         this.service = service;
     }

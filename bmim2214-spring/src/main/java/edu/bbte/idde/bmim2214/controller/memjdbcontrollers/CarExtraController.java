@@ -1,6 +1,6 @@
-package edu.bbte.idde.bmim2214.controller;
+package edu.bbte.idde.bmim2214.controller.memjdbcontrollers;
 
-import edu.bbte.idde.bmim2214.business.CarExtraService;
+import edu.bbte.idde.bmim2214.business.memjdbcservices.CarExtraServiceImp;
 import edu.bbte.idde.bmim2214.controller.dto.indto.CarExtraDtoIn;
 import edu.bbte.idde.bmim2214.controller.dto.outdto.CarExtraDtoOut;
 import edu.bbte.idde.bmim2214.controller.mapper.CarExtraMapper;
@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Profile("jpa")
+@Profile("!jpa")
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 @Slf4j
 @RequestMapping("/cars/{carId}/extras")
 public class CarExtraController {
 
-    private final CarExtraService carExtraService;
+    private final CarExtraServiceImp carExtraService;
     private final CarExtraMapper carExtraMapper;
 
     @Autowired
-    public CarExtraController(CarExtraService carExtraService, CarExtraMapper carExtraMapper) {
+    public CarExtraController(CarExtraServiceImp carExtraService, CarExtraMapper carExtraMapper) {
         this.carExtraService = carExtraService;
         this.carExtraMapper = carExtraMapper;
     }

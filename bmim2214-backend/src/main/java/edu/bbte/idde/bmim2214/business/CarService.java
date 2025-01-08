@@ -16,5 +16,4 @@ public interface CarService {
     CarModel getCar(int id) throws CarExceptionDatabase;
 
     List<CarModel> getAllCars() throws CarExceptionDatabase;
-
 }

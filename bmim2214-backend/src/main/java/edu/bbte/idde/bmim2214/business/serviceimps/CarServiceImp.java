@@ -1,26 +1,27 @@
-package edu.bbte.idde.bmim2214.business;
+package edu.bbte.idde.bmim2214.business.serviceimps;
 
-import java.time.LocalDate;
-import java.util.List;
-
+import edu.bbte.idde.bmim2214.business.CarService;
 import edu.bbte.idde.bmim2214.business.exceptions.CarExceptionDates;
-import edu.bbte.idde.bmim2214.dataaccess.dao.CarDao;
+import edu.bbte.idde.bmim2214.dataaccess.dao.AllDao;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import edu.bbte.idde.bmim2214.dataaccess.factory.AbstractDaoFactory;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
+import java.util.List;
+
 public class CarServiceImp implements CarService {
-    private final CarDao carDao;
-    private static final Logger log = LoggerFactory.getLogger(CarServiceImp.class);
+    private final AllDao carDao;
+    private static final Logger log = LoggerFactory.getLogger(AllServiceImp.class);
 
     public CarServiceImp() {
         AbstractDaoFactory abstractDaoFactory = AbstractDaoFactory.getInstance();
         this.carDao = abstractDaoFactory.getCarDao();
     }
 
-    public CarServiceImp(CarDao carDao) {
+    public CarServiceImp(AllDao carDao) {
         this.carDao = carDao;
     }
 
