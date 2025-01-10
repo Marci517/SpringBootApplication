@@ -57,7 +57,7 @@ public class CarDaoJdbc implements CarDao {
 
 
     @Override
-    public void deleteCar(long id) throws CarExceptionDatabase {
+    public void deleteById(long id) throws CarExceptionDatabase {
         log.info("delete car");
         String sqlString = "DELETE FROM CarModel WHERE CarModel.id = ?";
         try (Connection connection = dataSource.getConnection();
@@ -108,7 +108,7 @@ public class CarDaoJdbc implements CarDao {
     }
 
     @Override
-    public CarModel readCar(long id) throws CarExceptionDatabase {
+    public CarModel findById(long id) throws CarExceptionDatabase {
         log.info("read car");
         String sqlString = "SELECT * FROM CarModel WHERE CarModel.id = ?";
         try (Connection connection = dataSource.getConnection();
@@ -132,7 +132,7 @@ public class CarDaoJdbc implements CarDao {
 
 
     @Override
-    public List<CarModel> getAllCars() throws CarExceptionDatabase {
+    public List<CarModel> findAll() throws CarExceptionDatabase {
         log.info("get all cars");
         List<CarModel> carList = new ArrayList<>();
         String sqlString = "SELECT * FROM CarModel";

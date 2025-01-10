@@ -1,69 +1,40 @@
 package edu.bbte.idde.bmim2214.dataaccess.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@Entity
+@Table(name = "CarModelJpa")
 public class CarModel extends BaseEntity {
+    @Column(length = 255)
+    @NotNull
     private String name;
+    @Column(length = 255)
+    @NotNull
     private String brand;
+    @NotNull
     private int year;
+    @NotNull
     private double price;
-
+    @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date uploadDate;
 
-    public CarModel() {
-        super();
-    }
-
-    public CarModel(long id, String name, String brand, int year, Date uploadDate) {
-        super(id);
-        this.name = name;
-        this.brand = brand;
-        this.year = year;
-        this.uploadDate = uploadDate;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public Date getUploadDate() {
-        return uploadDate;
-    }
-
-    public void setUploadDate(Date uploadDate) {
-        this.uploadDate = uploadDate;
-    }
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<CarExtra> extras = new ArrayList<>();
 
     @Override
     public String toString() {

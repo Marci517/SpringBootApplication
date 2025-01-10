@@ -19,6 +19,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/cars")
 public class CarController {
     private final CarMapper mapper;
@@ -31,36 +32,32 @@ public class CarController {
     }
 
     @GetMapping("/{id}")
-    @CrossOrigin(origins = "http://localhost:5173")
-    public CarDtoOut getCar(@PathVariable String id) throws CarExceptionDatabase, NumberFormatException {
+    public CarDtoOut getCar(@PathVariable Long id) throws CarExceptionDatabase, NumberFormatException {
         log.info("GET/cars/id");
-        CarModel car = service.getCar(Integer.parseInt(id));
+        CarModel car = service.findById(id);
         return mapper.carToDto(car);
     }
 
 
     @GetMapping
-    @CrossOrigin(origins = "http://localhost:5173")
     public List<CarShortDtoOut> getAllCarsFromSpecYear(@RequestParam(value = "year", required = false) String year)
             throws CarExceptionDatabase, NumberFormatException {
         log.info("GET/cars/{year}");
         if (year != null) {
             return (List<CarShortDtoOut>) mapper.carsToDtos(service.getAllCarsFromSpecYear(Integer.parseInt(year)));
         } else {
-            return (List<CarShortDtoOut>) mapper.carsToDtos(service.getAllCars());
+            return (List<CarShortDtoOut>) mapper.carsToDtos(service.findAll());
         }
     }
 
     @DeleteMapping("/{id}")
-    @CrossOrigin(origins = "http://localhost:5173")
-    public void deleteCar(@PathVariable String id) throws CarExceptionDatabase, NumberFormatException {
+    public void deleteById(@PathVariable Long id) throws CarExceptionDatabase, NumberFormatException {
         log.info("DELETE/cars/{id}");
-        service.deleteCar(Integer.parseInt(id));
+        service.deleteById(id);
     }
 
     @PostMapping
-    @CrossOrigin(origins = "http://localhost:5173")
-    public CarDtoOut addCar(@RequestBody @Valid CarDtoIn car)
+    public CarDtoOut createCar(@RequestBody @Valid CarDtoIn car)
             throws CarExceptionDatabase, CarExceptionDates {
         log.info("POST/cars");
         LocalDate localDate = LocalDate.now();
@@ -68,13 +65,12 @@ public class CarController {
         int year = localDate.getYear();
         Date today = new Date(year - 1900, localDate.getMonthValue() - 1, localDate.getDayOfMonth());
         carToSet.setUploadDate(today);
-        return mapper.carToDto(service.addCar(carToSet));
+        return mapper.carToDto(service.createCar(carToSet));
 
     }
 
     @PutMapping("/{id}")
-    @CrossOrigin(origins = "http://localhost:5173")
-    public CarDtoOut updateCar(@PathVariable String id, @RequestBody @Valid CarDtoIn car)
+    public CarDtoOut updateCar(@PathVariable Long id, @RequestBody @Valid CarDtoIn car)
             throws CarExceptionDatabase, CarExceptionDates, NumberFormatException {
         log.info("PUT/car/id");
 
@@ -83,7 +79,7 @@ public class CarController {
         CarModel carToSet = mapper.dtoToCar(car);
         Date today = new Date(year - 1900, localDate.getMonthValue() - 1, localDate.getDayOfMonth());
         carToSet.setUploadDate(today);
-        carToSet.setId(Long.parseLong(id));
+        carToSet.setId(id);
         return mapper.carToDto(service.updateCar(carToSet));
     }
 

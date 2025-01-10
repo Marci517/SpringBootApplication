@@ -28,7 +28,7 @@ public class CarMemoryDB implements CarDao {
     }
 
     @Override
-    public void deleteCar(long id) throws CarExceptionDatabase {
+    public void deleteById(long id) throws CarExceptionDatabase {
         log.info("delete car");
         if (carDatabase.containsKey(id)) {
             carDatabase.remove(id);
@@ -50,7 +50,7 @@ public class CarMemoryDB implements CarDao {
     }
 
     @Override
-    public CarModel readCar(long id) throws CarExceptionDatabase {
+    public CarModel findById(long id) throws CarExceptionDatabase {
         log.info("read car");
         if (carDatabase.containsKey(id)) {
             return carDatabase.get(id);
@@ -61,7 +61,7 @@ public class CarMemoryDB implements CarDao {
     }
 
     @Override
-    public List<CarModel> getAllCars() {
+    public List<CarModel> findAll() {
         log.info("get all cars");
         return new ArrayList<>(carDatabase.values());
     }

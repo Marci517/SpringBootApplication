@@ -23,7 +23,7 @@ public class CarServiceImp implements CarService {
     }
 
     @Override
-    public CarModel addCar(CarModel car) throws CarExceptionDatabase, CarExceptionDates {
+    public CarModel createCar(CarModel car) throws CarExceptionDatabase, CarExceptionDates {
         log.info("add car");
         LocalDate currentDate = LocalDate.now();
         int currentYear = currentDate.getYear();
@@ -38,15 +38,23 @@ public class CarServiceImp implements CarService {
     }
 
     @Override
-    public void deleteCar(int id) throws CarExceptionDatabase {
+    public void deleteById(long id) throws CarExceptionDatabase {
         log.info("delete car");
-        carDao.deleteCar(id);
+        CarModel car = carDao.findById(id);
+        if (car == null) {
+            throw new CarExceptionDatabase("Car not found with id: " + id);
+        }
+        carDao.deleteById(id);
 
     }
 
     @Override
     public CarModel updateCar(CarModel car) throws CarExceptionDatabase, CarExceptionDates {
         log.info("update car");
+        CarModel carToCheck = carDao.findById(car.getId());
+        if (carToCheck == null) {
+            throw new CarExceptionDatabase("Car not found with id: " + car.getId());
+        }
         LocalDate currentDate = LocalDate.now();
         int currentYear = currentDate.getYear();
 
@@ -59,15 +67,19 @@ public class CarServiceImp implements CarService {
     }
 
     @Override
-    public CarModel getCar(int id) throws CarExceptionDatabase {
+    public CarModel findById(long id) throws CarExceptionDatabase {
         log.info("get car");
-        return carDao.readCar(id);
+        CarModel car = carDao.findById(id);
+        if (car == null) {
+            throw new CarExceptionDatabase("Car not found with id: " + id);
+        }
+        return car;
     }
 
     @Override
-    public List<CarModel> getAllCars() throws CarExceptionDatabase {
+    public List<CarModel> findAll() throws CarExceptionDatabase {
         log.info("get all cars");
-        return carDao.getAllCars();
+        return carDao.findAll();
     }
 
     @Override

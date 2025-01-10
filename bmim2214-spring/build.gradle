@@ -8,13 +8,14 @@ dependencies {
     implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.0.1'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter', version: '3.4.0'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '3.4.0'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '3.4.0'
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.36'
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.36'
     implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.6.3'
     annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.6.3'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '3.4.0'
-
-
+    implementation group: 'jakarta.persistence', name: 'jakarta.persistence-api', version: '3.1.0'
+    runtimeOnly group: 'org.hibernate.orm', name: 'hibernate-core', version: '6.1.6.Final'
 }
 
 
