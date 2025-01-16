@@ -7,15 +7,15 @@ import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 import java.util.List;
 
 public interface CarService {
-    CarModel addCar(CarModel car) throws CarExceptionDatabase, CarExceptionDates;
+    CarModel createCar(CarModel car) throws CarExceptionDatabase, CarExceptionDates;
 
-    void deleteCar(int id) throws CarExceptionDatabase;
+    void deleteById(long id) throws CarExceptionDatabase;
 
     CarModel updateCar(CarModel car) throws CarExceptionDatabase, CarExceptionDates;
 
-    CarModel getCar(int id) throws CarExceptionDatabase;
+    CarModel findById(long id) throws CarExceptionDatabase;
 
-    List<CarModel> getAllCars() throws CarExceptionDatabase;
+    List<CarModel> findAll() throws CarExceptionDatabase;
 
     List<CarModel> getAllCarsFromSpecYear(int year) throws CarExceptionDatabase;
 

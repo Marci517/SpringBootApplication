@@ -3,11 +3,9 @@ package edu.bbte.idde.bmim2214.controller.dto.indto;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
-import java.sql.Date;
 
 @Data
 public class CarDtoIn {
-    private Date uploadDate;
     @NotBlank
     private String name;
     @NotBlank
