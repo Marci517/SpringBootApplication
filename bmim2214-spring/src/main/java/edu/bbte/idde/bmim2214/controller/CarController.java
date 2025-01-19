@@ -2,11 +2,12 @@ package edu.bbte.idde.bmim2214.controller;
 
 import edu.bbte.idde.bmim2214.business.CarServiceImp;
 import edu.bbte.idde.bmim2214.business.exceptions.CarExceptionDates;
+import edu.bbte.idde.bmim2214.controller.dto.indto.CarModelFilter;
+import edu.bbte.idde.bmim2214.controller.dto.outdto.CarShortDtoOut;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 import edu.bbte.idde.bmim2214.controller.dto.indto.CarDtoIn;
 import edu.bbte.idde.bmim2214.controller.dto.outdto.CarDtoOut;
-import edu.bbte.idde.bmim2214.controller.dto.outdto.CarShortDtoOut;
 import edu.bbte.idde.bmim2214.controller.mapper.CarMapper;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:3000", "http://192.168.1.6:3000"})
 @RequestMapping("/cars")
 public class CarController {
     private final CarMapper mapper;
@@ -36,18 +37,6 @@ public class CarController {
         log.info("GET/cars/id");
         CarModel car = service.findById(id);
         return mapper.carToDto(car);
-    }
-
-
-    @GetMapping
-    public List<CarShortDtoOut> getAllCarsFromSpecYear(@RequestParam(value = "year", required = false) String year)
-            throws CarExceptionDatabase, NumberFormatException {
-        log.info("GET/cars/{year}");
-        if (year != null) {
-            return (List<CarShortDtoOut>) mapper.carsToDtos(service.getAllCarsFromSpecYear(Integer.parseInt(year)));
-        } else {
-            return (List<CarShortDtoOut>) mapper.carsToDtos(service.findAll());
-        }
     }
 
     @DeleteMapping("/{id}")
@@ -81,6 +70,11 @@ public class CarController {
         carToSet.setUploadDate(today);
         carToSet.setId(id);
         return mapper.carToDto(service.updateCar(carToSet));
+    }
+
+    @GetMapping
+    public List<CarShortDtoOut> getFilteredCars(CarModelFilter filter) {
+        return (List<CarShortDtoOut>) mapper.carsToDtos(service.getFilteredCars(filter));
     }
 
 }

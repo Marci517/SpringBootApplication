@@ -1,6 +1,7 @@
 package edu.bbte.idde.bmim2214.business;
 
 import edu.bbte.idde.bmim2214.business.exceptions.CarExceptionDates;
+import edu.bbte.idde.bmim2214.controller.dto.indto.CarModelFilter;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 
@@ -15,8 +16,6 @@ public interface CarService {
 
     CarModel findById(long id) throws CarExceptionDatabase;
 
-    List<CarModel> findAll() throws CarExceptionDatabase;
-
-    List<CarModel> getAllCarsFromSpecYear(int year) throws CarExceptionDatabase;
+    List<CarModel> getFilteredCars(CarModelFilter spec);
 
 }

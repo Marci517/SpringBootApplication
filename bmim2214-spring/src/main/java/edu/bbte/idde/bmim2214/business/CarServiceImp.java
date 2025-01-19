@@ -1,11 +1,14 @@
 package edu.bbte.idde.bmim2214.business;
 
 import edu.bbte.idde.bmim2214.business.exceptions.CarExceptionDates;
+import edu.bbte.idde.bmim2214.controller.dto.indto.CarModelFilter;
 import edu.bbte.idde.bmim2214.dataaccess.dao.CarDao;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
+import edu.bbte.idde.bmim2214.dataaccess.specification.CarModelSpecification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -77,15 +80,14 @@ public class CarServiceImp implements CarService {
     }
 
     @Override
-    public List<CarModel> findAll() throws CarExceptionDatabase {
-        log.info("get all cars");
-        return carDao.findAll();
-    }
+    public List<CarModel> getFilteredCars(CarModelFilter filter) {
+        Specification<CarModel> spec = CarModelSpecification.filterBy(
+                filter.getBrand(),
+                filter.getMinYear(), filter.getMaxYear(),
+                filter.getMinPrice(), filter.getMaxPrice()
+        );
 
-    @Override
-    public List<CarModel> getAllCarsFromSpecYear(int year) throws CarExceptionDatabase {
-        log.info("get all cars from a specific year");
-        return carDao.getAllCarsFromSpecYear(year);
+        return carDao.findAll(spec);
     }
 
 

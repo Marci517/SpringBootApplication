@@ -2,6 +2,7 @@ package edu.bbte.idde.bmim2214.dataaccess.dao;
 
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
@@ -15,9 +16,5 @@ public interface CarDao {
 
     CarModel findById(long id) throws CarExceptionDatabase;
 
-    List<CarModel> findAll() throws CarExceptionDatabase;
-
-    List<CarModel> getAllCarsFromSpecYear(int year) throws CarExceptionDatabase;
-
-
+    List<CarModel> findAll(Specification<CarModel> spec);
 }
