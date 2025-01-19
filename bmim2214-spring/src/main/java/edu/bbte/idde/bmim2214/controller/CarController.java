@@ -74,6 +74,7 @@ public class CarController {
 
     @GetMapping
     public List<CarShortDtoOut> getFilteredCars(CarModelFilter filter) {
+        log.info("GET/cars?params");
         return (List<CarShortDtoOut>) mapper.carsToDtos(service.getFilteredCars(filter));
     }
 
