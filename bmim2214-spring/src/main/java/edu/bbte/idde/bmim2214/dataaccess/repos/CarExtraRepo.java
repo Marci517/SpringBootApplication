@@ -1,4 +1,4 @@
-package edu.bbte.idde.bmim2214.dataaccess.dao.repo;
+package edu.bbte.idde.bmim2214.dataaccess.repos;
 
 import edu.bbte.idde.bmim2214.dataaccess.model.CarExtra;
 import org.springframework.context.annotation.Profile;

@@ -2,7 +2,7 @@ package edu.bbte.idde.bmim2214.business;
 
 import edu.bbte.idde.bmim2214.business.exceptions.CarExceptionDates;
 import edu.bbte.idde.bmim2214.controller.dto.indto.CarModelFilter;
-import edu.bbte.idde.bmim2214.dataaccess.dao.CarDao;
+import edu.bbte.idde.bmim2214.dataaccess.repos.CarModelRepo;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 import edu.bbte.idde.bmim2214.dataaccess.specification.CarModelSpecification;
@@ -18,11 +18,11 @@ import java.util.List;
 @Slf4j
 public class CarServiceImp implements CarService {
 
-    private final CarDao carDao;
+    private final CarModelRepo carModelRepo;
 
     @Autowired
-    public CarServiceImp(CarDao carDao) {
-        this.carDao = carDao;
+    public CarServiceImp(CarModelRepo carModelRepo) {
+        this.carModelRepo = carModelRepo;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class CarServiceImp implements CarService {
         if (car.getYear() > currentYear) {
             throw new CarExceptionDates("The year should be between 1900 and the current year.");
         } else {
-            carDao.createCar(car);
+            carModelRepo.save(car);
             return car;
         }
 
@@ -43,28 +43,26 @@ public class CarServiceImp implements CarService {
     @Override
     public void deleteById(long id) throws CarExceptionDatabase {
         log.info("delete car");
-        CarModel car = carDao.findById(id);
-        if (car == null) {
-            throw new CarExceptionDatabase("Car not found with id: " + id);
-        }
-        carDao.deleteById(id);
+        CarModel car = carModelRepo.findById(id)
+                .orElseThrow(() -> new CarExceptionDatabase("Car not found with id: " + id));
+
+        carModelRepo.deleteById(car.getId());
 
     }
 
     @Override
     public CarModel updateCar(CarModel car) throws CarExceptionDatabase, CarExceptionDates {
         log.info("update car");
-        CarModel carToCheck = carDao.findById(car.getId());
-        if (carToCheck == null) {
-            throw new CarExceptionDatabase("Car not found with id: " + car.getId());
-        }
+        CarModel carToCheck = carModelRepo.findById(car.getId())
+                .orElseThrow(() -> new CarExceptionDatabase("Car not found with id: " + car.getId()));
+        log.info(carToCheck.toString());
         LocalDate currentDate = LocalDate.now();
         int currentYear = currentDate.getYear();
 
         if (car.getYear() > currentYear) {
             throw new CarExceptionDates("The year should be between 1900 and the current year.");
         } else {
-            carDao.updateCar(car);
+            carModelRepo.save(car);
             return car;
         }
     }
@@ -72,11 +70,9 @@ public class CarServiceImp implements CarService {
     @Override
     public CarModel findById(long id) throws CarExceptionDatabase {
         log.info("get car");
-        CarModel car = carDao.findById(id);
-        if (car == null) {
-            throw new CarExceptionDatabase("Car not found with id: " + id);
-        }
-        return car;
+
+        return carModelRepo.findById(id)
+                .orElseThrow(() -> new CarExceptionDatabase("Car not found with id: " + id));
     }
 
     @Override
@@ -87,7 +83,7 @@ public class CarServiceImp implements CarService {
                 filter.getMinPrice(), filter.getMaxPrice()
         );
 
-        return carDao.findAll(spec);
+        return carModelRepo.findAll(spec);
     }
 
 

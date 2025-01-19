@@ -1,6 +1,6 @@
 package edu.bbte.idde.bmim2214.scheduling;
 
-import edu.bbte.idde.bmim2214.dataaccess.dao.repo.CarModelRepo;
+import edu.bbte.idde.bmim2214.dataaccess.repos.CarModelRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
