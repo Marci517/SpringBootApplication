@@ -7,6 +7,8 @@ import edu.bbte.idde.bmim2214.dataaccess.model.CarExtra;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -28,16 +30,20 @@ public class CarExtraServiceImp implements CarExtraService {
     }
 
     @Override
+    @Cacheable(value = "carExtras", key = "#carId")
     public List<CarExtra> getAllExtras(long carId) throws CarExceptionDatabase {
         log.info("get all extras");
         CarModel car = carModelRepo.findById(carId);
         if (car == null) {
             throw new CarExceptionDatabase("Car not found with id: " + carId);
         }
+        List<CarExtra> extras = car.getExtras();
+        log.info(String.valueOf(extras.size()));
         return car.getExtras();
     }
 
     @Override
+    @CacheEvict(value = "carExtras", key = "#carId")
     public CarExtra addCarExtra(long carId, CarExtra carExtra) throws CarExceptionDatabase {
         log.info("add an extra");
         CarModel car = carModelRepo.findById(carId);
@@ -49,6 +55,7 @@ public class CarExtraServiceImp implements CarExtraService {
     }
 
     @Override
+    @CacheEvict(value = "carExtras", key = "#carId")
     public void deleteCarExtra(long carId, long extraId) throws CarExceptionDatabase {
         log.info("delete an extra");
         CarModel car = carModelRepo.findById(carId);
