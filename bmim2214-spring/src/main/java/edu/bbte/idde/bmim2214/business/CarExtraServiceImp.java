@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 
 @Profile("jpa")
@@ -31,13 +31,13 @@ public class CarExtraServiceImp implements CarExtraService {
 
     @Override
     @Cacheable(value = "carExtras", key = "#carId")
-    public List<CarExtra> getAllExtras(long carId) throws CarExceptionDatabase {
+    public Page<CarExtra> getAllExtras(long carId, Pageable pageable) throws CarExceptionDatabase {
         log.info("get all extras");
         CarModel car = carModelRepo.findById(carId)
                 .orElseThrow(() -> new CarExceptionDatabase("Car not found with id: " + carId));
-        List<CarExtra> extras = car.getExtras();
-        log.info(String.valueOf(extras.size()));
-        return car.getExtras();
+        Page<CarExtra> carExtras = carExtraRepo.findByCar_Id(car.getId(), pageable);
+        log.info(carExtras.toString());
+        return carExtras;
     }
 
     @Override

@@ -4,8 +4,8 @@ import edu.bbte.idde.bmim2214.business.exceptions.CarExceptionDates;
 import edu.bbte.idde.bmim2214.controller.dto.indto.CarModelFilter;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface CarService {
     CarModel createCar(CarModel car) throws CarExceptionDatabase, CarExceptionDates;
@@ -16,6 +16,6 @@ public interface CarService {
 
     CarModel findById(long id) throws CarExceptionDatabase;
 
-    List<CarModel> getFilteredCars(CarModelFilter spec);
+    Page<CarModel> getFilteredCars(CarModelFilter spec, Pageable pageable);
 
 }

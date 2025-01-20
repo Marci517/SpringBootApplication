@@ -8,11 +8,12 @@ import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 import edu.bbte.idde.bmim2214.dataaccess.specification.CarModelSpecification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 @Slf4j
@@ -76,14 +77,14 @@ public class CarServiceImp implements CarService {
     }
 
     @Override
-    public List<CarModel> getFilteredCars(CarModelFilter filter) {
+    public Page<CarModel> getFilteredCars(CarModelFilter filter, Pageable pageable) {
         Specification<CarModel> spec = CarModelSpecification.filterBy(
                 filter.getBrand(),
                 filter.getMinYear(), filter.getMaxYear(),
                 filter.getMinPrice(), filter.getMaxPrice()
         );
 
-        return carModelRepo.findAll(spec);
+        return carModelRepo.findAll(spec, pageable);
     }
 
 

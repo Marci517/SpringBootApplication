@@ -2,11 +2,12 @@ package edu.bbte.idde.bmim2214.business;
 
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarExtra;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 
 public interface CarExtraService {
-    List<CarExtra> getAllExtras(long carId) throws CarExceptionDatabase;
+    Page<CarExtra> getAllExtras(long carId, Pageable pageable) throws CarExceptionDatabase;
 
     CarExtra addCarExtra(long carId, CarExtra carExtra) throws CarExceptionDatabase;
 

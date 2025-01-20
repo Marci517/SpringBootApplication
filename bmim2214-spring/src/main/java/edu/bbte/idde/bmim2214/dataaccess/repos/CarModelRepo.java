@@ -16,4 +16,5 @@ public interface CarModelRepo extends JpaRepository<CarModel, Long>, JpaSpecific
     @Query("SELECT COUNT(c) FROM CarModel c WHERE c.price < 5000")
     long countCarsPriceLT5K();
 
+
 }

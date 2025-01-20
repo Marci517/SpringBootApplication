@@ -9,9 +9,14 @@ import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 import edu.bbte.idde.bmim2214.controller.dto.indto.CarDtoIn;
 import edu.bbte.idde.bmim2214.controller.dto.outdto.CarDtoOut;
 import edu.bbte.idde.bmim2214.controller.mapper.CarMapper;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -73,9 +78,30 @@ public class CarController {
     }
 
     @GetMapping
-    public List<CarShortDtoOut> getFilteredCars(CarModelFilter filter) {
+    public List<CarShortDtoOut> getFilteredCars(CarModelFilter filter,
+                                                @RequestParam(defaultValue = "0") int page,
+                                                @RequestParam(defaultValue = "2") int size,
+                                                @RequestParam(defaultValue = "name") String sortBy,
+                                                @RequestParam(defaultValue = "asc") String sortDirection,
+                                                HttpServletResponse response) {
+        String defaultSortBy;
+        if ("name".equalsIgnoreCase(sortBy)
+                || "year".equalsIgnoreCase(sortBy)
+                || "price".equalsIgnoreCase(sortBy)
+                || "brand".equalsIgnoreCase(sortBy)) {
+            defaultSortBy = sortBy;
+        } else {
+            defaultSortBy = "name";
+        }
+        Sort sort = "desc".equalsIgnoreCase(sortDirection)
+                ? Sort.by(defaultSortBy).descending() : Sort.by(defaultSortBy).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<CarModel> carPage = service.getFilteredCars(filter, pageable);
+
+        response.setHeader("X-Total-Count", String.valueOf(carPage.getTotalElements()));
+
         log.info("GET/cars?params");
-        return (List<CarShortDtoOut>) mapper.carsToDtos(service.getFilteredCars(filter));
+        return (List<CarShortDtoOut>) mapper.carsToDtos(carPage.getContent());
     }
 
 }
