@@ -36,7 +36,7 @@ public class CarExtraController {
 
     @GetMapping
     public List<CarExtraDtoOut> getAllExtras(@PathVariable Long carId,
-                                             @RequestParam(defaultValue = "1") int page,
+                                             @RequestParam(defaultValue = "0") int page,
                                              @RequestParam(defaultValue = "5") int size,
                                              @RequestParam(defaultValue = "description") String sortBy,
                                              @RequestParam(defaultValue = "asc") String sortDirection,
