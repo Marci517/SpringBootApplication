@@ -1,16 +1,18 @@
 package edu.bbte.idde.bmim2214.business;
 
-import edu.bbte.idde.bmim2214.dataaccess.dao.repo.CarExtraRepo;
-import edu.bbte.idde.bmim2214.dataaccess.dao.repo.CarModelRepo;
+import edu.bbte.idde.bmim2214.dataaccess.repos.CarExtraRepo;
+import edu.bbte.idde.bmim2214.dataaccess.repos.CarModelRepo;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarExtra;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 
 @Profile("jpa")
@@ -28,33 +30,32 @@ public class CarExtraServiceImp implements CarExtraService {
     }
 
     @Override
-    public List<CarExtra> getAllExtras(long carId) throws CarExceptionDatabase {
+    @Cacheable(value = "carExtras", key = "#carId")
+    public Page<CarExtra> getAllExtras(long carId, Pageable pageable) throws CarExceptionDatabase {
         log.info("get all extras");
-        CarModel car = carModelRepo.findById(carId);
-        if (car == null) {
-            throw new CarExceptionDatabase("Car not found with id: " + carId);
-        }
-        return car.getExtras();
+        CarModel car = carModelRepo.findById(carId)
+                .orElseThrow(() -> new CarExceptionDatabase("Car not found with id: " + carId));
+        Page<CarExtra> carExtras = carExtraRepo.findByCar_Id(car.getId(), pageable);
+        log.info(carExtras.toString());
+        return carExtras;
     }
 
     @Override
+    @CacheEvict(value = "carExtras", key = "#carId")
     public CarExtra addCarExtra(long carId, CarExtra carExtra) throws CarExceptionDatabase {
         log.info("add an extra");
-        CarModel car = carModelRepo.findById(carId);
-        if (car == null) {
-            throw new CarExceptionDatabase("Car not found with id: " + carId);
-        }
+        CarModel car = carModelRepo.findById(carId)
+                .orElseThrow(() -> new CarExceptionDatabase("Car not found with id: " + carId));
         carExtra.setCar(car);
         return carExtraRepo.save(carExtra);
     }
 
     @Override
+    @CacheEvict(value = "carExtras", key = "#carId")
     public void deleteCarExtra(long carId, long extraId) throws CarExceptionDatabase {
         log.info("delete an extra");
-        CarModel car = carModelRepo.findById(carId);
-        if (car == null) {
-            throw new CarExceptionDatabase("Car not found " + carId);
-        }
+        CarModel car = carModelRepo.findById(carId)
+                .orElseThrow(() -> new CarExceptionDatabase("Car not found with id: " + carId));
         car.getExtras().removeIf(extra -> extra.getId() == extraId);
         carModelRepo.save(car);
     }
