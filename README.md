@@ -58,4 +58,8 @@ VALUES ('Model S', 'Tesla', 2022, 799, '2025-01-24');
 UPDATE CarModel SET price = 75000 WHERE car_name = 'Model S';
 DELETE FROM CarModel WHERE id = 1;
 
+## git:
+git reset --hard HEAD
+(nem commitolt valtoztatasok torlese)
+
 
