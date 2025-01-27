@@ -7,6 +7,7 @@ import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 
 import java.util.Collection;
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public abstract class CarExtraMapper {
@@ -15,5 +16,5 @@ public abstract class CarExtraMapper {
     public abstract CarExtraDtoOut extraToDto(CarExtra carExtra);
 
     @IterableMapping(elementTargetType = CarExtraDtoOut.class)
-    public abstract Collection<CarExtraDtoOut> carExtrasToDtos(Collection<CarExtra> carExtras);
+    public abstract List<CarExtraDtoOut> carExtrasToDtos(Collection<CarExtra> carExtras);
 }
