@@ -38,7 +38,7 @@ public class CarController {
 
     @GetMapping("/{id}")
     public CarDtoOut getCar(@PathVariable Long id,
-                            @RequestParam(value = "full") String full)
+                            @RequestParam String full)
             throws CarExceptionDatabase, NumberFormatException, ExceptionFull {
         log.info("GET/cars/id");
         if ("yes".equals(full)) {
@@ -53,7 +53,7 @@ public class CarController {
             carVeryShortDtoOut.setName(car.getName());
             carVeryShortDtoOut.setId(id);
             carVeryShortDtoOut.setExtras(extraMapper.carExtrasToDtos(car.getExtras()));
-            return (CarDtoOut) mapper.carToDtoVS(car);
+            return mapper.carToDto(car);
         }
         throw new ExceptionFull("Wrong value for full parameter");
 
