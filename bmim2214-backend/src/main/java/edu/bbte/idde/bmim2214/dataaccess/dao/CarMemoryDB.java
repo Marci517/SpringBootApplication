@@ -61,4 +61,11 @@ public class CarMemoryDB implements CarDao {
         log.info("get all cars");
         return new ArrayList<>(carDatabase.values());
     }
+
+    @Override
+    public List<CarModel> getAllCarsFromSpecYear(int min, int max) throws CarExceptionDatabase {
+      ArrayList arrayList = new ArrayList<>(carDatabase.values());
+      ArrayList newArray = new ArrayList<>();
+      return null;
+    }
 }

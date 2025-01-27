@@ -84,7 +84,7 @@ public class CarServiceImp implements CarService {
 
     @Override
     public List<CarModel> getAllCarsFromSpecYear(int year) throws CarExceptionDatabase {
-        log.info("get all cars from a specific  year");
+        log.info("get all cars from a specific year");
         return carDao.getAllCarsFromSpecYear(year);
     }
 
