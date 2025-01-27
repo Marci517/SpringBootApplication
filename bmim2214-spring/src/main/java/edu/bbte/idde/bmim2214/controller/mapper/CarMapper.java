@@ -15,6 +15,8 @@ public abstract class CarMapper {
 
     public abstract CarDtoOut carToDto(CarModel car);
 
+    public abstract CarShortDtoOut carToDtoVS(CarModel car);
+
     @IterableMapping(elementTargetType = CarShortDtoOut.class)
     public abstract Collection<CarShortDtoOut> carsToDtos(Collection<CarModel> cars);
 }

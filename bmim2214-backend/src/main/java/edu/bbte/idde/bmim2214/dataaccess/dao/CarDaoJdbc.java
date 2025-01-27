@@ -148,6 +148,30 @@ public class CarDaoJdbc implements CarDao {
         return carList;
     }
 
+    @Override
+    public List<CarModel> getAllCarsFromSpecYear(int min, int max) throws CarExceptionDatabase {
+        log.info("get all cars from spec year");
+
+        List<CarModel> carList = new ArrayList<>();
+        String sqlString = "SELECT * FROM CarModel WHERE car_year > ? and car_year < ?";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement sqlQuery = connection.prepareStatement(sqlString)) {
+            sqlQuery.setInt(1, min);
+            sqlQuery.setInt(2, max);
+
+            try (ResultSet resultSet = sqlQuery.executeQuery()) {
+                while (resultSet.next()) {
+                    carList.add(extractCarModel(resultSet));
+                }
+            }
+
+        } catch (SQLException e) {
+            log.info("There is no such an id");
+            throw new CarExceptionDatabase("There is no such an id", e);
+        }
+        return carList;
+    }
+
     private CarModel extractCarModel(ResultSet resultSet) throws SQLException {
         CarModel car = new CarModel();
         car.setId(resultSet.getLong("id"));

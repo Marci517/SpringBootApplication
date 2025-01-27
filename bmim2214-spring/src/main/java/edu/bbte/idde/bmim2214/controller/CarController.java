@@ -2,6 +2,9 @@ package edu.bbte.idde.bmim2214.controller;
 
 import edu.bbte.idde.bmim2214.business.CarServiceImp;
 import edu.bbte.idde.bmim2214.business.exceptions.CarExceptionDates;
+import edu.bbte.idde.bmim2214.controller.dto.outdto.CarVeryShortDtoOut;
+import edu.bbte.idde.bmim2214.controller.exceptions.ExceptionFull;
+import edu.bbte.idde.bmim2214.controller.mapper.CarExtraMapper;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 import edu.bbte.idde.bmim2214.controller.dto.indto.CarDtoIn;
@@ -23,19 +26,37 @@ import java.util.List;
 @RequestMapping("/cars")
 public class CarController {
     private final CarMapper mapper;
+    private final CarExtraMapper extraMapper;
     private final CarServiceImp service;
 
     @Autowired
-    public CarController(CarMapper mapper, CarServiceImp service) {
+    public CarController(CarMapper mapper, CarServiceImp service, CarExtraMapper carExtraMapper) {
         this.mapper = mapper;
         this.service = service;
+        this.extraMapper = carExtraMapper;
     }
 
     @GetMapping("/{id}")
-    public CarDtoOut getCar(@PathVariable Long id) throws CarExceptionDatabase, NumberFormatException {
+    public CarDtoOut getCar(@PathVariable Long id,
+                            @RequestParam String full)
+            throws CarExceptionDatabase, NumberFormatException, ExceptionFull {
         log.info("GET/cars/id");
-        CarModel car = service.findById(id);
-        return mapper.carToDto(car);
+        if ("yes".equals(full)) {
+            CarModel car = service.findById(id);
+            return mapper.carToDto(car);
+        }
+        if ("no".equals(full)) {
+            CarVeryShortDtoOut carVeryShortDtoOut = new CarVeryShortDtoOut();
+            CarModel car = service.findById(id);
+            carVeryShortDtoOut.setBrand(car.getBrand());
+            carVeryShortDtoOut.setPrice(car.getPrice());
+            carVeryShortDtoOut.setName(car.getName());
+            carVeryShortDtoOut.setId(id);
+            carVeryShortDtoOut.setExtras(extraMapper.carExtrasToDtos(car.getExtras()));
+            return mapper.carToDto(car);
+        }
+        throw new ExceptionFull("Wrong value for full parameter");
+
     }
 
 

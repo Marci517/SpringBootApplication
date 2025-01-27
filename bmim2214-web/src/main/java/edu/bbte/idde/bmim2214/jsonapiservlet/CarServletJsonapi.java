@@ -31,19 +31,57 @@ public class CarServletJsonapi extends HttpServlet {
         log.info("GET /carModels");
 
         String idStr = req.getParameter("id");
+        String minYear = req.getParameter("minYear");
+        String maxYear = req.getParameter("maxYear");
         resp.setHeader("Content-Type", "application/json");
         objectMapper.setTimeZone(TimeZone.getTimeZone("Europe/Bucharest"));
 
         if (idStr == null) {
             try {
-                List<CarModel> carModels;
-                carModels = carService.getAllCars();
-                objectMapper.writeValue(resp.getOutputStream(), carModels);
+                if (minYear != null && maxYear != null) {
+                    List<CarModel> carModels;
+                    int min = Integer.parseInt(minYear);
+                    int max = Integer.parseInt(maxYear);
+                    if (min > max) {
+                        log.info("Failed to get all cars from spec years");
+                        resp.setStatus(400);
+                        ErrorMessage error = new ErrorMessage("Bad Request ",
+                                "Failed to get all cars from spec year");
+                        objectMapper.writeValue(resp.getOutputStream(), error);
+                    }
+                    if (!Boolean.parseBoolean(FilterProvider.getFilterFlag("filter"))) {
+                        log.info("Failed to get all cars from spec years");
+                        resp.setStatus(500);
+                        ErrorMessage error = new ErrorMessage("Internal Server Error ",
+                                "Feature is not supported");
+                        objectMapper.writeValue(resp.getOutputStream(), error);
+                    }
+                    try {
+                        carModels = carService.getAllCarsFromSpecYear(min, max);
+                        objectMapper.writeValue(resp.getOutputStream(), carModels);
+                    } catch (CarExceptionDatabase e) {
+                        log.info("Failed to get all cars from spec years");
+                        resp.setStatus(500);
+                        ErrorMessage error = new ErrorMessage("Internal Server Error ",
+                                "Failed to get all cars from spec year");
+                        objectMapper.writeValue(resp.getOutputStream(), error);
+                    }
+                } else {
+                    List<CarModel> carModels;
+                    carModels = carService.getAllCars();
+                    objectMapper.writeValue(resp.getOutputStream(), carModels);
+                }
             } catch (CarExceptionDatabase | IOException e) {
                 log.info("Failed to get all cars");
                 resp.setStatus(500);
                 ErrorMessage error = new ErrorMessage("Internal Server Error ",
                         "Failed to get all cars");
+                objectMapper.writeValue(resp.getOutputStream(), error);
+            } catch (NumberFormatException e) {
+                log.info("Failed to get all cars from spec years");
+                resp.setStatus(400);
+                ErrorMessage error = new ErrorMessage("Bad Request ",
+                        "Failed to get all cars from spec year, wrong parameters");
                 objectMapper.writeValue(resp.getOutputStream(), error);
             }
         } else {

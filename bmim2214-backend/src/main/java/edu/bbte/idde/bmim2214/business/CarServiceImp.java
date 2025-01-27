@@ -81,4 +81,10 @@ public class CarServiceImp implements CarService {
         return car.getPrice() > 0 && car.getBrand() != null && car.getName() != null
                 && !car.getBrand().isEmpty() && !car.getName().isEmpty();
     }
+
+    @Override
+    public List<CarModel> getAllCarsFromSpecYear(int min, int max) throws CarExceptionDatabase {
+        log.info("get all cars from spec year");
+        return carDao.getAllCarsFromSpecYear(min, max);
+    }
 }

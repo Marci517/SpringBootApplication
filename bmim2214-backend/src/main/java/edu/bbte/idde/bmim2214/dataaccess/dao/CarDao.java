@@ -17,5 +17,7 @@ public interface CarDao {
 
     List<CarModel> getAllCars() throws CarExceptionDatabase;
 
+    List<CarModel> getAllCarsFromSpecYear(int min, int max) throws CarExceptionDatabase;
+
 
 }
