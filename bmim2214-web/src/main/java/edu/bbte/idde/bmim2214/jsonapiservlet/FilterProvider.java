@@ -14,7 +14,6 @@ import java.util.Properties;
 
 public class FilterProvider {
     private static final Properties properties = new Properties();
-    private static final String envVar = System.getenv("profile");
     private static final String fileName = "/application.json";
     private static final Logger log = LoggerFactory.getLogger(FilterProvider.class);
 

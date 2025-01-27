@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
@@ -64,8 +65,8 @@ public class CarMemoryDB implements CarDao {
 
     @Override
     public List<CarModel> getAllCarsFromSpecYear(int min, int max) throws CarExceptionDatabase {
-      ArrayList arrayList = new ArrayList<>(carDatabase.values());
-      ArrayList newArray = new ArrayList<>();
-      return null;
+        return carDatabase.values().stream()
+                .filter(car -> car.getYear() > min && car.getYear() < max)
+                .collect(Collectors.toList());
     }
 }

@@ -2,6 +2,7 @@ package edu.bbte.idde.bmim2214.controller;
 
 import edu.bbte.idde.bmim2214.business.CarServiceImp;
 import edu.bbte.idde.bmim2214.business.exceptions.CarExceptionDates;
+import edu.bbte.idde.bmim2214.controller.exceptions.ExceptionFull;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import edu.bbte.idde.bmim2214.dataaccess.model.CarModel;
 import edu.bbte.idde.bmim2214.controller.dto.indto.CarDtoIn;
@@ -32,10 +33,20 @@ public class CarController {
     }
 
     @GetMapping("/{id}")
-    public CarDtoOut getCar(@PathVariable Long id) throws CarExceptionDatabase, NumberFormatException {
+    public CarDtoOut getCar(@PathVariable Long id,
+                            @RequestParam(value = "full") String full)
+            throws CarExceptionDatabase, NumberFormatException, ExceptionFull {
         log.info("GET/cars/id");
-        CarModel car = service.findById(id);
-        return mapper.carToDto(car);
+        if ("yes".equals(full)) {
+            CarModel car = service.findById(id);
+            return mapper.carToDto(car);
+        }
+        if ("no".equals(full)) {
+            CarModel car = service.findById(id);
+            return (CarDtoOut) mapper.carToDtoVS(car);
+        }
+        throw new ExceptionFull("Wrong value for full parameter");
+
     }
 
 

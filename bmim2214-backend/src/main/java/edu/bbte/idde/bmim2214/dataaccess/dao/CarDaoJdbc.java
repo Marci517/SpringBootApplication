@@ -151,8 +151,6 @@ public class CarDaoJdbc implements CarDao {
     @Override
     public List<CarModel> getAllCarsFromSpecYear(int min, int max) throws CarExceptionDatabase {
         log.info("get all cars from spec year");
-        System.out.println(min);
-        System.out.println(max);
 
         List<CarModel> carList = new ArrayList<>();
         String sqlString = "SELECT * FROM CarModel WHERE car_year > ? and car_year < ?";
@@ -171,7 +169,6 @@ public class CarDaoJdbc implements CarDao {
             log.info("There is no such an id");
             throw new CarExceptionDatabase("There is no such an id", e);
         }
-        System.out.println(carList);
         return carList;
     }
 

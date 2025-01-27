@@ -1,6 +1,7 @@
 package edu.bbte.idde.bmim2214.controller;
 
 import edu.bbte.idde.bmim2214.business.exceptions.CarExceptionDates;
+import edu.bbte.idde.bmim2214.controller.exceptions.ExceptionFull;
 import edu.bbte.idde.bmim2214.dataaccess.exceptions.CarExceptionDatabase;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -53,4 +54,12 @@ public class CarControllerAdvice {
     public Stream<String> handleNumberFormatException(NumberFormatException e) {
         return Stream.of(e.getMessage());
     }
+
+    @ExceptionHandler(ExceptionFull.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public Stream<String> handleExceptionFull(ExceptionFull e) {
+        return Stream.of(e.getMessage());
+    }
+
 }
