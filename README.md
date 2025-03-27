@@ -146,4 +146,4 @@ A React-based frontend application connects to all Spring REST endpoints.
 
 ---
 
-This system demonstrates a clean separation of concerns using 3-layered architecture, modular Java development, and flexible UI and API access across multiple platforms.
+Additional Spring-specific features such as pagination, caching, and advanced filtering are available in the `springFeatures` branch.
