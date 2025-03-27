@@ -14,7 +14,7 @@ import java.util.List;
 
 @Profile("jpa")
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:3000"})
 @Slf4j
 @RequestMapping("/cars/{carId}/extras")
 public class CarExtraController {

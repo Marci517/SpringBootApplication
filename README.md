@@ -107,10 +107,11 @@ A React-based frontend application connects to all Spring REST endpoints.
 
 - Lists and manages cars
 - Handles car extras (create, view, delete)
-- Communicates using `fetch` or `axios`
+- Communicates using `axios`
 - Uses form validation and modern UI patterns
 
-> The React frontend is maintained in a separate repository.
+> The React frontend source code is available here:  
+> [https://github.com/Marci517/car-management-system-react](https://github.com/Marci517/car-management-system-react)
 
 ---
 
