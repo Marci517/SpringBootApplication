@@ -147,4 +147,7 @@ A React-based frontend application connects to all Spring REST endpoints.
 
 ---
 
-Additional Spring-specific features such as pagination, caching, and advanced filtering are available in the `springFeatures` branch.
+> Additional Spring-specific features such as pagination, caching, and advanced filtering are available in the `springFeatures` branch:
+
+> [https://github.com/Marci517/car-management-system-spring/tree/springFeatures](https://github.com/Marci517/car-management-system-spring/tree/springFeatures)
+
