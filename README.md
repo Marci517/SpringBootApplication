@@ -141,7 +141,7 @@ A React-based frontend application connects to all Spring REST endpoints.
 - Jackson-based JSON API
 
 ### Desktop Module
-- Java Swing GUI 
+- Java Swing GUI
 - Direct connection to backend service
 
 ---
